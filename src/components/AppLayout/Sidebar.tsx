@@ -4,7 +4,6 @@ import {
     UserOutlined,
     DashboardOutlined,
     SettingOutlined,
-    TeamOutlined,
     AppstoreOutlined,
     InfoCircleOutlined,
     ToolOutlined,
@@ -17,12 +16,11 @@ const { Sider } = Layout
 
 const menuItems = [
     { key: '/', icon: <DashboardOutlined />, label: 'Dashboard' },
-    { key: '/usuarios', icon: <TeamOutlined />, label: 'Usuarios' },
-    { key: '/equipos', icon: <AppstoreOutlined />, label: 'Equipos' },
-    { key: '/mantenimientos', icon: <ToolOutlined />, label: 'Mantenimientos' },
+    { key: '/equipments', icon: <AppstoreOutlined />, label: 'Equipos' },
+    { key: '/maintenances', icon: <ToolOutlined />, label: 'Mantenimientos' },
     { type: 'divider' as const },
-    { key: '/configuracion', icon: <SettingOutlined />, label: 'Configuración' },
-    { key: '/cuenta', icon: <UserOutlined />, label: 'Cuenta' },
+    { key: '/configuration', icon: <SettingOutlined />, label: 'Configuración' },
+    { key: '/account', icon: <UserOutlined />, label: 'Cuenta' },
     { key: '/informacion', icon: <InfoCircleOutlined />, label: 'Información' }
 ]
 

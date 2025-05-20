@@ -47,7 +47,7 @@ export default function AppLayout() {
                     mobileOpen={mobileOpen}
                     setMobileOpen={setMobileOpen}
                 />
-                <Content className="p-8 bg-gray-50 min-h-[calc(100vh-64px)]">
+                <Content className="p-8 bg-gray-50 h-[calc(100vh-64px)] overflow-y-auto">
                     <Outlet />
                 </Content>
             </Layout>
