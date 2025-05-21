@@ -44,8 +44,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     const menu = (
         <>
-            <div className="flex items-center justify-center h-16 border-b border-gray-100">
-                <Avatar className="bg-blue-600 mr-2" size="large">G</Avatar>
+            <div className="flex px-2 items-center justify-between h-16 border-b border-gray-100">
+                {(!collapsed || isMobile) && (
+                    <Avatar className="bg-blue-600 mr-2" size="large">G</Avatar>
+                )}
                 <span
                     className={
                         `font-bold text-blue-700 text-lg tracking-wide transition-all duration-200 ` +
@@ -54,6 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 >
                     MANTI AC
                 </span>
+               
                 {!isMobile && (
                     <Button
                         type="text"
@@ -77,7 +80,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         </>
     )
 
-    // En móvil, usar Drawer para mostrar el menú sobre el contenido
     if (isMobile) {
         return (
             <Drawer
@@ -94,7 +96,6 @@ const Sidebar: React.FC<SidebarProps> = ({
         )
     }
 
-    // En desktop, usar Sider normal
     return (
         <Sider
             collapsible

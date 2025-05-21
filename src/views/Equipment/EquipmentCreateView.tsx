@@ -2,10 +2,17 @@ import { useForm } from 'react-hook-form'
 import { Card } from '@tremor/react';
 import EquipmentForm from '../../components/AppLayout/Equipment/EquipmentForm';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import type { EquipmentFormData } from '../../types';
+import { createEquipment } from '../../services/EquipmentAPI';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 
 export default function EquipmentCreateView() {
 
-    const initialValues = {
+    const navigate = useNavigate()
+
+    const initialValues: EquipmentFormData = {
         brand: "",
         serialNumber: "",
         location: ""
@@ -13,9 +20,19 @@ export default function EquipmentCreateView() {
 
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
-    const handleForm = (data) => {
-        console.log(data);
-        // Aquí puedes agregar la lógica para guardar el equipo
+    const { mutate } = useMutation({
+        mutationFn: createEquipment,
+        onSuccess: (data) => {
+            toast.success(data)
+            navigate('/equipments')
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        }
+    })
+
+    const handleForm = (formData: EquipmentFormData) => {
+        mutate(formData)
     }
 
     return (
@@ -27,6 +44,9 @@ export default function EquipmentCreateView() {
                     <p className="text-gray-500 text-center max-w-md">
                         Completa el siguiente formulario para agregar un nuevo equipo al sistema. Todos los campos son obligatorios.
                     </p>
+                    <button className="mt-4 bg-blue-400 w-64 p-3 text-white uppercase font-bold rounded hover:bg-blue-500 transition-colors cursor-pointer" onClick={() => navigate('/equipments')}>
+                        Volver a equipos
+                    </button>
                 </div>
 
                 <form

@@ -8,6 +8,8 @@ import AccountView from './views/Account/AccountView'
 import InformationView from './views/InformationView'
 import NotFound from './views/NotFound'
 import EquipmentCreateView from './views/Equipment/EquipmentCreateView'
+import EquipmentDetailsView from './views/Equipment/EquipmentDetailsView'
+import EquipmentEditView from './views/Equipment/EquipmentEditView'
 
 export default function Router() {
     return (
@@ -17,6 +19,8 @@ export default function Router() {
                     <Route path='/' element={<DashboardView />} index />
                     <Route path='/equipments' element={<EquipmentView />} />
                     <Route path='/equipments/create' element={<EquipmentCreateView />} />
+                    <Route path='/equipments/:equipmentId/edit' element={<EquipmentEditView />} />
+                    <Route path='/equipments/:equipmentId' element={<EquipmentDetailsView />} />
                     <Route path='/maintenances' element={<MaintenanceView />} />
                     <Route path='/configuration' element={<ConfigurationView />} />
                     <Route path='/account' element={<AccountView />} />

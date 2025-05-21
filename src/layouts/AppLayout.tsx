@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Layout, Button } from 'antd'
+import { Layout} from 'antd'
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/AppLayout/Sidebar'
 import HeaderBar from '../components/AppLayout/HeaderBar'
-import { MenuUnfoldOutlined } from '@ant-design/icons'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const { Content } = Layout
 
@@ -23,34 +24,32 @@ export default function AppLayout() {
     }, [])
 
     return (
-        <Layout className="min-h-screen">
-            <Sidebar
-                collapsed={collapsed}
-                setCollapsed={setCollapsed}
-                mobileOpen={mobileOpen}
-                setMobileOpen={setMobileOpen}
-                isMobile={isMobile}
-            />
-            {/* Botón flotante solo en móvil y cuando el menú está cerrado */}
-            {isMobile && !mobileOpen && (
-                <Button
-                    type="primary"
-                    shape="circle"
-                    icon={<MenuUnfoldOutlined />}
-                    onClick={() => setMobileOpen(true)}
-                    className="fixed top-4 left-4 z-50"
-                />
-            )}
-            <Layout>
-                <HeaderBar
-                    isMobile={isMobile}
+        <>
+            <Layout className="min-h-screen">
+                <Sidebar
+                    collapsed={collapsed}
+                    setCollapsed={setCollapsed}
                     mobileOpen={mobileOpen}
                     setMobileOpen={setMobileOpen}
+                    isMobile={isMobile}
                 />
-                <Content className="p-8 bg-gray-50 h-[calc(100vh-64px)] overflow-y-auto">
-                    <Outlet />
-                </Content>
+                <Layout>
+                    <HeaderBar
+                        isMobile={isMobile}
+                        mobileOpen={mobileOpen}
+                        setMobileOpen={setMobileOpen}
+                    />
+                    <Content className="p-8 bg-gray-50 h-[calc(100vh-64px)] overflow-y-auto">
+                        <Outlet />
+                    </Content>
+                </Layout>
             </Layout>
-        </Layout>
+            <ToastContainer
+                pauseOnHover={false}
+                pauseOnFocusLoss={false}
+                autoClose={2000}
+                position='bottom-center'
+            />
+        </>
     )
 }

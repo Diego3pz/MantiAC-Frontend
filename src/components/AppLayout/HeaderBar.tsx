@@ -10,7 +10,7 @@ interface HeaderBarProps {
 }
 
 const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOpen }) => (
-    <Header className="bg-white px-4 sm:px-6 flex items-center justify-between shadow-sm gap-2 h-16">
+    <Header className="bg-white px-4 sm:px-6 flex items-center justify-between shadow-sm gap-2 h-16 border-b border-gray-200">
         {/* Botón solo en móvil y cuando el menú está cerrado */}
         {isMobile && !mobileOpen && (
             <Button

@@ -1,17 +1,10 @@
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import ErrorMessage from "../../ErrorMessage";
+import type { EquipmentFormData } from "../../../types";
 
 type EquipmentFormProps = {
-    register: UseFormRegister<{
-        brand: string;
-        serialNumber: string;
-        location: string;
-    }>;
-    errors: FieldErrors<{
-        brand: string;
-        serialNumber: string;
-        location: string;
-    }>
+    register: UseFormRegister<EquipmentFormData>;
+    errors: FieldErrors<EquipmentFormData>
 }
 
 export default function EquipmentForm({ register, errors }: EquipmentFormProps) {
