@@ -4,12 +4,17 @@ import { PlusOutlined, EditOutlined, EyeOutlined, DeleteOutlined, AntDesignOutli
 import { Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Card as CardTremor } from '@tremor/react';
-import { useQuery } from '@tanstack/react-query';
-import { getAllEquipments } from '../../services/EquipmentAPI';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteEquipment, getAllEquipments } from '../../services/EquipmentAPI';
+import { toast } from 'react-toastify';
+import SearchBar from '../../components/atoms/Search';
 
 
 
 export default function EquipmentView() {
+
+  const [search, setSearch] = useState("");
+
 
   const { data, isLoading } = useQuery({
     queryKey: ['equipments'],
@@ -17,19 +22,33 @@ export default function EquipmentView() {
     retry: false
   })
 
+  const queryClient = useQueryClient()
+  const { mutate } = useMutation({
+    mutationFn: deleteEquipment,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['equipments'] })
+      toast.success(data)
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+
   const navigate = useNavigate();
   const [current, setCurrent] = useState(1);
 
-  const handleDelete = (id: number) => {
-    alert(`Eliminar equipo con id: ${id}`);
-  };
+  const equiposFiltrados = data?.filter(equipo =>
+    [equipo.brand, equipo.serialNumber, equipo.location]
+      .join(" ")
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  ) || [];
 
   // Paginación
   const PAGE_SIZE = 6;
   const startIdx = (current - 1) * PAGE_SIZE;
   const endIdx = startIdx + PAGE_SIZE;
-  const equiposPagina = data?.slice(startIdx, endIdx);
-  console.log(equiposPagina);
+  const equiposPagina = equiposFiltrados.slice(startIdx, endIdx);
 
   if (isLoading) {
     return (
@@ -57,6 +76,11 @@ export default function EquipmentView() {
         className="max-w-6xl mx-auto mt-4 px-2 py-4"
         style={{ minHeight: 600 }}
       >
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Buscar por marca, serie o ubicación"
+        />
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4 px-3">
           <h2 className="text-xl font-bold">Equipos registrados</h2>
           <Button
@@ -92,7 +116,7 @@ export default function EquipmentView() {
                   actions={[
                     <EyeOutlined key="view" title="Ver equipo" onClick={() => navigate(`/equipments/${equipo._id}`)} />,
                     <EditOutlined key="edit" title="Editar" onClick={() => navigate(`/equipments/${equipo._id}/edit`)} />,
-                    <DeleteOutlined key="delete" title="Eliminar" onClick={() => handleDelete(Number(equipo._id))} />,
+                    <DeleteOutlined key="delete" title="Eliminar" onClick={() => mutate(equipo._id)} />,
                   ]}
                   className="mb-2"
                   bodyStyle={{ paddingBottom: 0 }}

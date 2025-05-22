@@ -16,5 +16,5 @@ export default function EquipmentEditView() {
 
     if (isLoading) return 'Cargando...'
     if (isError) return <Navigate to='/404' />
-    if (data) return <EditEquipmentForm />
+    if (data) return <EditEquipmentForm data={data} />
 }

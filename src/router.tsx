@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout'
 import DashboardView from './views/DashboardView'
 import EquipmentView from './views/Equipment/EquipmentView'
-import MaintenanceView from './views/MaintenanceView'
+import MaintenanceView from './views/Maintenance/MaintenanceView'
 import ConfigurationView from './views/ConfigurationView'
 import AccountView from './views/Account/AccountView'
 import InformationView from './views/InformationView'
@@ -10,6 +10,7 @@ import NotFound from './views/NotFound'
 import EquipmentCreateView from './views/Equipment/EquipmentCreateView'
 import EquipmentDetailsView from './views/Equipment/EquipmentDetailsView'
 import EquipmentEditView from './views/Equipment/EquipmentEditView'
+import MaintenanceCreateView from './views/Maintenance/MaintenanceCreateView'
 
 export default function Router() {
     return (
@@ -21,6 +22,7 @@ export default function Router() {
                     <Route path='/equipments/create' element={<EquipmentCreateView />} />
                     <Route path='/equipments/:equipmentId/edit' element={<EquipmentEditView />} />
                     <Route path='/equipments/:equipmentId' element={<EquipmentDetailsView />} />
+                    <Route path='/equipments/:equipmentId/maintenance/create' element={<MaintenanceCreateView />} />
                     <Route path='/maintenances' element={<MaintenanceView />} />
                     <Route path='/configuration' element={<ConfigurationView />} />
                     <Route path='/account' element={<AccountView />} />

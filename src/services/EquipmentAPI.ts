@@ -37,3 +37,30 @@ export async function getEquipmentById(id: Equipment['_id']) {
         }
     }
 }
+
+type EquipmentAPIType = {
+    formData: EquipmentFormData
+    equipmentId: Equipment['_id']
+}
+
+export async function updateEquipment({ formData, equipmentId }: EquipmentAPIType) {
+    try {
+        const { data } = await api.put<string>(`/equipments/${equipmentId}`, formData)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function deleteEquipment(id: Equipment['_id']) {
+    try {
+        const { data } = await api.delete<string>(`/equipments/${id}`)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}

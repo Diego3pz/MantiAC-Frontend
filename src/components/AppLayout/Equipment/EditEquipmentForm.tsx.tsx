@@ -3,20 +3,48 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import { Card } from '@tremor/react';
 import type { EquipmentFormData } from "../../../types";
 import { useForm } from "react-hook-form";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateEquipment } from "../../../services/EquipmentAPI";
+import { toast } from "react-toastify";
 
-export default function EditEquipmentForm() {
+type EditEquipmentFormProps = {
+    data: EquipmentFormData
+}
+
+export default function EditEquipmentForm({ data }: EditEquipmentFormProps) {
     const navigate = useNavigate()
-    const initialValues: EquipmentFormData = {
-        brand: "",
-        serialNumber: "",
-        location: ""
-    }
+    const params = useParams()
+    const equipmentId = params.equipmentId!
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            brand: data.brand,
+            serialNumber: data.serialNumber,
+            location: data.location
+        }
+    })
 
+    const queryClient = useQueryClient()
+
+    const { mutate } = useMutation({
+        mutationFn: updateEquipment,
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['equipments'] })
+            queryClient.invalidateQueries({ queryKey: ['editEquipments', equipmentId] })
+            toast.success(data)
+            navigate('/equipments')
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        }
+    })
     const handleForm = (formData: EquipmentFormData) => {
-        console.log(formData)
+        const data = {
+            formData,
+            equipmentId
+        }
+        mutate(data)
     }
 
     return (
