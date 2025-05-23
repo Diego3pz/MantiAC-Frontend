@@ -1,11 +1,13 @@
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import ErrorMessage from "../../ErrorMessage";
 import type { EquipmentFormData } from "../../../types";
+import { locationTraslation } from "../../../locales/es";
 
 type EquipmentFormProps = {
     register: UseFormRegister<EquipmentFormData>;
     errors: FieldErrors<EquipmentFormData>
 }
+
 
 export default function EquipmentForm({ register, errors }: EquipmentFormProps) {
     return (
@@ -44,13 +46,17 @@ export default function EquipmentForm({ register, errors }: EquipmentFormProps) 
             <label className="block font-semibold  text-slate-700" htmlFor="location">
                 Ubicación
             </label>
-            <input
+            <select
                 id="location"
-                type="text"
                 {...register("location", { required: "La ubicación es obligatoria" })}
                 className="w-full border border-blue-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 placeholder-gray-400 transition"
-                placeholder="Ej: Oficina 1, Almacén, etc."
-            />
+            >
+                {Object.entries(locationTraslation).map(([key, value]) => (
+                    <option key={key} value={value}>
+                        {value}
+                    </option>
+                ))}
+            </select>
             {errors.location && (
                 <ErrorMessage>{errors.location.message}</ErrorMessage>
             )}

@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { dashboardEquipmentSchema, type Equipment, type EquipmentFormData } from "../types";
+import { dashboardEquipmentSchema, EquipmentSchema, MaintenanceArraySchema, type Equipment, type EquipmentFormData, type Maintenance, type MaintenanceFormData } from "../types";
 
 export async function createEquipment(formData: EquipmentFormData) {
     try {
@@ -30,7 +30,10 @@ export async function getAllEquipments() {
 export async function getEquipmentById(id: Equipment['_id']) {
     try {
         const { data } = await api(`/equipments/${id}`)
-        return data
+        const response = EquipmentSchema.safeParse(data)
+        if (response.success) {
+            return response.data
+        }
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
@@ -62,5 +65,40 @@ export async function deleteEquipment(id: Equipment['_id']) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error)
         }
+    }
+}
+
+
+// Maintenance
+
+type MaintenanceAPIType = {
+    formData: MaintenanceFormData
+    equipmentId: Maintenance['_id']
+}
+
+export async function createMaintenance({ formData, equipmentId }: MaintenanceAPIType) {
+    try {
+        const { data } = await api.post<string>(`/equipments/${equipmentId}/maintenance`, formData)
+        return data
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function GetAllMaintenanceByEquipment(equipmentId: Equipment['_id']) {
+    try {
+        const { data } = await api(`/equipments/${equipmentId}/maintenance`);
+        const response = MaintenanceArraySchema.safeParse(data);
+        if (response.success) {
+            return response.data;
+        }
+        
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+        throw error;
     }
 }
