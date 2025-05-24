@@ -1,148 +1,96 @@
-import { Table, Tag, Button, Space } from 'antd';
-import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
+import { getAllEquipments, GetAllMaintenance } from '../../services/EquipmentAPI';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import SearchBar from '../../components/atoms/Search';
+import { useNavigate } from 'react-router-dom';
+import { useMaintenanceColumns } from '../../components/AppLayout/Maintenance/MaintenanceColums';
 
-// Datos ficticios de ejemplo
-const data = [
-  {
-    key: '1',
-    equipment: { brand: 'LG', serialNumber: 'SN1234' },
-    type: 'Preventivo Completo',
-    date: '2024-05-01',
-    completed: true,
-    performedBy: 'Juan Pérez',
-    cost: 1200,
-  },
-  {
-    key: '2',
-    equipment: { brand: 'Samsung', serialNumber: 'SN5678' },
-    type: 'Correctivo',
-    date: '2024-05-10',
-    completed: false,
-    performedBy: 'Ana López',
-    cost: 800,
-  },
-  {
-    key: '3',
-    equipment: { brand: 'Samsung', serialNumber: 'SN5678' },
-    type: 'Correctivo',
-    date: '2024-05-10',
-    completed: false,
-    performedBy: 'Ana López',
-    cost: 800,
-  },
-  {
-    key: '4',
-    equipment: { brand: 'LG', serialNumber: 'SN1234' },
-    type: 'Preventivo Completo',
-    date: '2024-05-01',
-    completed: true,
-    performedBy: 'Juan Pérez',
-    cost: 1200,
-  },
-  {
-    key: '5',
-    equipment: { brand: 'LG', serialNumber: 'SN1234' },
-    type: 'Preventivo Completo',
-    date: '2024-05-01',
-    completed: true,
-    performedBy: 'Juan Pérez',
-    cost: 1200,
-  },
-  {
-    key: '6',
-    equipment: { brand: 'Samsung', serialNumber: 'SN5678' },
-    type: 'Correctivo',
-    date: '2024-05-10',
-    completed: false,
-    performedBy: 'Ana López',
-    cost: 800,
-  },
-  {
-    key: '7',
-    equipment: { brand: 'LG', serialNumber: 'SN1234' },
-    type: 'Preventivo Completo',
-    date: '2024-05-01',
-    completed: true,
-    performedBy: 'Juan Pérez',
-    cost: 1200,
-  },
-  {
-    key: '8',
-    equipment: { brand: 'Samsung', serialNumber: 'SN5678' },
-    type: 'Correctivo',
-    date: '2024-05-10',
-    completed: false,
-    performedBy: 'Ana López',
-    cost: 800,
-  },
-];
 
-const columns = [
-  {
-    title: 'Equipo',
-    dataIndex: 'equipment',
-    key: 'equipment',
-    render: (equipment: any) => (
-      <span>
-        <b>{equipment.brand}</b> <br />
-        <span className="text-gray-500">N.º Serie: {equipment.serialNumber}</span>
-      </span>
-    ),
-  },
-  {
-    title: 'Tipo',
-    dataIndex: 'type',
-    key: 'type',
-    render: (type: string) => <Tag color="blue">{type}</Tag>,
-  },
-  {
-    title: 'Fecha',
-    dataIndex: 'date',
-    key: 'date',
-  },
-  {
-    title: 'Estado',
-    dataIndex: 'completed',
-    key: 'completed',
-    render: (completed: boolean) =>
-      completed ? <Tag color="green">Completado</Tag> : <Tag color="orange">Pendiente</Tag>,
-  },
-  {
-    title: 'Responsable',
-    dataIndex: 'performedBy',
-    key: 'performedBy',
-  },
-  {
-    title: 'Costo',
-    dataIndex: 'cost',
-    key: 'cost',
-    render: (cost: number) => `$${cost}`,
-  },
-  {
-    title: 'Acciones',
-    key: 'actions',
-    render: (_: any, record: any) => (
-      <Space>
-        <Button icon={<EyeOutlined />} title='Ver'  />
-        <Button icon={<EditOutlined />} title='Editar' />
-        <Button icon={<DeleteOutlined />} title='Eliminar' danger />
-      </Space>
-    ),
-  },
-];
 
 export default function MaintenanceView() {
-  return (
-    <div className=" mx-auto mt-8 px-2">
-      <h2 className="text-2xl font-bold mb-4">Mantenimientos registrados</h2>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={{ pageSize: 6 }}
-        bordered
-        scroll={{ x: 'max-content' }} // Permite scroll horizontal en móvil
-        className="w-full "
-      />
-    </div>
+  const columns = useMaintenanceColumns();
+  
+  const navigate = useNavigate();
+  const [search, setSearch] = useState('')
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['maintenances'],
+    queryFn: GetAllMaintenance,
+    retry: false
+  })
+  const { data: equipos } = useQuery({
+    queryKey: ['equipments'],
+    queryFn: getAllEquipments,
+    retry: false
+  });
+
+  const dataWithKeys = data?.map((item) => ({
+    ...item,
+    key: item._id,
+  }))
+
+  // Filtro por búsqueda
+  const filteredData = dataWithKeys?.filter(item =>
+    item.equipment.brand.toLowerCase().includes(search.toLowerCase()) ||
+    item.equipment.serialNumber.toLowerCase().includes(search.toLowerCase()) ||
+    (item.equipment.location && item.equipment.location.toLowerCase().includes(search.toLowerCase())) ||
+    (item.performedBy && item.performedBy.toLowerCase().includes(search.toLowerCase()))
   );
+
+  if (isLoading) return 'Cargando...'
+  if (data) {
+    return (
+      <div className="mx-auto mt-8 px-2">
+        <h2 className="text-2xl font-bold mb-4">Mantenimientos registrados</h2>
+        <SearchBar
+          value={search}
+          onChange={setSearch}
+          placeholder="Buscar por equipo, técnico o ubicación"
+        />
+        <Table
+          columns={columns}
+          dataSource={filteredData}
+          pagination={{ pageSize: 6 }}
+          bordered
+          scroll={{ x: 'max-content' }}
+          className="w-full"
+          locale={{
+            emptyText: (
+              <div className="text-center py-8 text-gray-500">
+                {(!data || data.length === 0) && (
+                  <>
+                    <span>
+                      No hay mantenimientos registrados aún.<br />
+                      {(!equipos || equipos.length === 0) ? (
+                        <div>
+                          Debes registrar al menos un equipo para poder crear mantenimientos.<br />
+                          <button
+                            className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+                            onClick={() => navigate('/equipments/create')}
+                          >
+                            Registrar equipo
+                          </button>
+                        </div>
+                      ) : (
+                        <div>¡Registra un mantenimiento desde la vista de un equipo!
+                          <br />
+                          <button
+                            className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+                            onClick={() => navigate('/equipments')}
+                          >
+                            Ir a equipos
+                          </button>
+                        </div>
+                      )}
+                    </span>
+                  </>
+                )}
+              </div>
+            ),
+          }}
+        />
+      </div>
+    );
+  }
 }

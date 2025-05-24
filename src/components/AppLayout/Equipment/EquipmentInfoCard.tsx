@@ -1,6 +1,9 @@
-import { Card, Button, Space, Divider } from "antd";
+import { Card, Button, Space, Divider, Modal } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteEquipment } from "../../../services/EquipmentAPI";
+import { toast } from "react-toastify";
 
 interface EquipmentInfoCardProps {
     equipmentId: string;
@@ -12,6 +15,32 @@ interface EquipmentInfoCardProps {
 export function EquipmentInfoCard({ equipmentId, brand, serialNumber, location }: EquipmentInfoCardProps) {
     const navigate = useNavigate();
 
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation({
+        mutationFn: deleteEquipment,
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['equipments'] })
+            toast.success(data)
+            navigate('/equipments')
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        }
+    })
+
+    const showDeleteConfirm = () => {
+        Modal.confirm({
+            title: "¿Eliminar equipo?",
+            content: "¿Estás seguro de que deseas eliminar este equipo y todos sus mantenimientos asociados?",
+            okText: "Sí, eliminar",
+            okType: "danger",
+            cancelText: "Cancelar",
+            onOk: () => {
+                mutate(equipmentId);
+            },
+        });
+    };
+
     return (
         <Card
             title={
@@ -21,11 +50,13 @@ export function EquipmentInfoCard({ equipmentId, brand, serialNumber, location }
                         <Button icon={<EditOutlined />} type="default" onClick={() => navigate(`/equipments/${equipmentId}/edit`)} >
                             Editar equipo
                         </Button>
-                        <Button icon={<DeleteOutlined />} danger type="default">
+                        <Button
+                            icon={<DeleteOutlined />}
+                            onClick={showDeleteConfirm} danger type="default">
                             Eliminar equipo
                         </Button>
                     </Space>
-                </div>
+                </ div>
             }
             className="mb-6"
         >

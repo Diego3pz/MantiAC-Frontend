@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getEquipmentById } from "../../services/EquipmentAPI";
 import { EquipmentInfoCard } from "../../components/AppLayout/Equipment/EquipmentInfoCard";
@@ -16,9 +16,9 @@ export default function EquipmentDetailsView() {
     });
 
     if (isLoading) return <div>Cargando...</div>;
-    if (isError || !DataEquipment) return <div>Error al cargar el equipo.</div>;
+    if (isError) return <Navigate to='/404' />;
 
-    return (
+    if (DataEquipment) return (
         <div className="mx-auto mt-8 px-2">
             <EquipmentInfoCard
                 equipmentId={equipmentId}

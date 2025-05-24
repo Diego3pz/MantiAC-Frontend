@@ -6,7 +6,7 @@ import type { EquipmentFormData } from '../../types';
 import { createEquipment } from '../../services/EquipmentAPI';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function EquipmentCreateView() {
 
@@ -20,9 +20,11 @@ export default function EquipmentCreateView() {
 
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
 
+    const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: createEquipment,
         onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['equipments'] })
             toast.success(data)
             navigate('/equipments')
         },

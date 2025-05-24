@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GetAllMaintenanceByEquipment } from "../../../services/EquipmentAPI";
-import { columns } from "./EquipmentDetailsColums";
 import { formatDate } from "../../../utils/utils";
+import { useEquipmentDetailsColumns } from "./EquipmentDetailsColums";
 
 
 
@@ -14,6 +14,7 @@ interface EquipmentMaintenanceTableProps {
 }
 
 export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceTableProps) {
+    const columns = useEquipmentDetailsColumns(equipmentId!);
     const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(false);
     const [currentMobilePage, setCurrentMobilePage] = useState(1);
@@ -63,7 +64,7 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
         </div>
     );
 
-    return (
+    if (data) return (
         <Card className="mb-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                 <span>
@@ -119,7 +120,9 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center border-t pt-2">
-                                    <button className="flex-1 flex justify-center items-center">
+                                    <button className="flex-1 flex justify-center items-center"
+                                        onClick={() => navigate(`/equipments/${equipmentId}/maintenance/${m._id}`)}
+                                    >
                                         <EyeOutlined style={{ fontSize: 20 }} />
                                     </button>
                                     <div className="h-6 border-l" />

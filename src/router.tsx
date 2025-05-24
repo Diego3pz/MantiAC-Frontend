@@ -12,6 +12,7 @@ import EquipmentDetailsView from './views/Equipment/EquipmentDetailsView'
 import EquipmentEditView from './views/Equipment/EquipmentEditView'
 import MaintenanceCreateView from './views/Maintenance/MaintenanceCreateView'
 import MaintenanceEditView from './views/Maintenance/MaintenanceEditView'
+import MaintenanceDetailsView from './views/Maintenance/MaintenanceDetailsView'
 
 export default function Router() {
     return (
@@ -25,7 +26,10 @@ export default function Router() {
                     <Route path='/equipments/:equipmentId' element={<EquipmentDetailsView />} />
                     <Route path='/equipments/:equipmentId/maintenance/create' element={<MaintenanceCreateView />} />
                     <Route path='/equipments/:equipmentId/maintenance/:maintenanceId/edit' element={<MaintenanceEditView />} />
+                    <Route path='/maintenance/:maintenanceId/edit' element={<MaintenanceEditView />} />
                     <Route path='/maintenances' element={<MaintenanceView />} />
+                    <Route path='/maintenances/:maintenanceId' element={<MaintenanceDetailsView />} />
+                    <Route path='/equipments/:equipmentId/maintenance/:maintenanceId' element={<MaintenanceDetailsView />} />
                     <Route path='/configuration' element={<ConfigurationView />} />
                     <Route path='/account' element={<AccountView />} />
                     <Route path='/informacion' element={<InformationView />} />

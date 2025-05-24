@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { dashboardEquipmentSchema, EquipmentSchema, MaintenanceArraySchema, type Equipment, type EquipmentFormData, type Maintenance, type MaintenanceFormData } from "../types";
+import { dashboardEquipmentSchema, EquipmentSchema, MaintenanceArraySchema, MaintenanceSchema, type Equipment, type EquipmentFormData, type Maintenance, type MaintenanceFormData } from "../types";
 
 export async function createEquipment(formData: EquipmentFormData) {
     try {
@@ -94,11 +94,58 @@ export async function GetAllMaintenanceByEquipment(equipmentId: Equipment['_id']
         if (response.success) {
             return response.data;
         }
-        
+
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
         throw error;
+    }
+}
+
+export async function GetAllMaintenance() {
+    try {
+        const { data } = await api(`/equipments/maintenance`);
+        const response = MaintenanceArraySchema.safeParse(data);
+        if (response.success) {
+            return response.data;
+        }
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+        throw error;
+    }
+}
+
+export async function getMaintenanceById(maintenanceId: Maintenance['_id']) {
+    try {
+        const { data } = await api(`/equipments/maintenance/${maintenanceId}`)
+        const response = MaintenanceSchema.safeParse(data)
+        if (response.success) {
+            return response.data
+        }
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+type UpdateMaintenanceAPIType = {
+    formData: MaintenanceFormData;
+    maintenanceId: string;
+};
+
+export async function updateMaintenance({ formData, maintenanceId }: UpdateMaintenanceAPIType) {
+    try {
+        const { data } = await api.put<string>(`/equipments/maintenance/${maintenanceId}`, formData);
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
     }
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Button, Empty, Pagination } from 'antd';
+import { Card, Button, Empty, Pagination, Tooltip } from 'antd';
 import { PlusOutlined, EditOutlined, EyeOutlined, DeleteOutlined, AntDesignOutlined, CreditCardOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import { Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteEquipment, getAllEquipments } from '../../services/EquipmentAPI';
 import { toast } from 'react-toastify';
 import SearchBar from '../../components/atoms/Search';
+import { Modal } from 'antd';
 
 
 
 export default function EquipmentView() {
-
+  const [modal, contextHolder] = Modal.useModal();
   const [search, setSearch] = useState("");
 
 
@@ -21,6 +22,7 @@ export default function EquipmentView() {
     queryFn: getAllEquipments,
     retry: false
   })
+
 
   const queryClient = useQueryClient()
   const { mutate } = useMutation({
@@ -70,7 +72,7 @@ export default function EquipmentView() {
       </CardTremor>
     );
   }
-  if (data) return (
+  if (data || equiposFiltrados) return (
     <>
       <CardTremor
         className="max-w-6xl mx-auto mt-4 px-2 py-4"
@@ -95,7 +97,7 @@ export default function EquipmentView() {
         <p className="text-center text-gray-600 mb-6">
           Visualiza, edita o elimina los equipos registrados en tu sistema.
         </p>
-        {data.length === 0 ? (
+        {equiposFiltrados.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
             <Empty
               description={
@@ -114,9 +116,40 @@ export default function EquipmentView() {
                   key={equipo._id}
                   style={{ minWidth: 220, maxWidth: 340, width: "100%" }}
                   actions={[
-                    <EyeOutlined key="view" title="Ver equipo" onClick={() => navigate(`/equipments/${equipo._id}`)} />,
-                    <EditOutlined key="edit" title="Editar" onClick={() => navigate(`/equipments/${equipo._id}/edit`)} />,
-                    <DeleteOutlined key="delete" title="Eliminar" onClick={() => mutate(equipo._id)} />,
+                    <Tooltip title="Ver detalles">
+                      <EyeOutlined
+                        key="view"
+                        title="Ver detalles"
+                        style={{ color: "#1677ff" }} // azul
+                        onClick={() => navigate(`/equipments/${equipo._id}`)}
+                      />
+                    </Tooltip>,
+                    <Tooltip title="Editar">
+                      < EditOutlined
+                        key="edit"
+                        title="Editar"
+                        style={{ color: "#faad14" }} // naranja
+                        onClick={() => navigate(`/equipments/${equipo._id}/edit`)}
+                      />
+                    </Tooltip>,
+
+                    <Tooltip title="Eliminar">
+                      < DeleteOutlined
+                        key="delete"
+                        title="Eliminar"
+                        style={{ color: "#ff4d4f" }} // rojo
+                        onClick={() => {
+                          modal.confirm({
+                            title: '¿Eliminar equipo?',
+                            content: '¿Estás seguro de ques deseas eliminar este equipo y todos sus mantenimientos asociados?',
+                            okText: 'Sí, eliminar',
+                            okType: 'danger',
+                            cancelText: 'Cancelar',
+                            onOk: () => mutate(equipo._id),
+                          });
+                        }}
+                      />
+                    </Tooltip>
                   ]}
                   className="mb-2"
                   bodyStyle={{ paddingBottom: 0 }}
@@ -140,7 +173,7 @@ export default function EquipmentView() {
                 </Card>
               ))}
             </div>
-
+            {contextHolder}
           </>
         )}
       </CardTremor>
@@ -148,7 +181,7 @@ export default function EquipmentView() {
         <Pagination
           current={current}
           pageSize={PAGE_SIZE}
-          total={data.length}
+          total={equiposFiltrados.length}
           onChange={setCurrent}
           showSizeChanger={false}
         />

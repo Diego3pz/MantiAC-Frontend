@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -26,9 +26,11 @@ export default function MaintenanceCreateView() {
 
   const { register, handleSubmit, control, formState: { errors } } = useForm({ defaultValues: initialValues })
 
+const queryClient = useQueryClient()
   const { mutate } = useMutation({
     mutationFn: createMaintenance,
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['maintenances'] })
       toast.success(data)
       navigate(`/equipments/${equipmentId}`)
     },
