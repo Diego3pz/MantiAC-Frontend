@@ -5,7 +5,7 @@ import type { Maintenance } from "../../../types";
 import type { ColumnsType } from 'antd/es/table';
 import { useNavigate } from "react-router-dom";
 
-export function useMaintenanceColumns() {
+export function useMaintenanceColumns(onDelete: (id: string) => void) {
     const navigate = useNavigate();
 
     const columns: ColumnsType<Maintenance> = [
@@ -112,7 +112,7 @@ export function useMaintenanceColumns() {
         {
             title: 'Acciones',
             key: 'actions',
-            render: (_: string, record: any) => (
+            render: (_: string, record) => (
                 <Space>
                     <Tooltip title="Ver detalles">
                         <Button icon={<EyeOutlined />} onClick={() => navigate(`/maintenances/${record._id}`)} />
@@ -121,7 +121,11 @@ export function useMaintenanceColumns() {
                         <Button icon={<EditOutlined />} onClick={() => navigate(`/maintenance/${record._id}/edit`)} />
                     </Tooltip>
                     <Tooltip title="Eliminar">
-                        <Button icon={<DeleteOutlined />} danger />
+                        <Button
+                            icon={<DeleteOutlined />}
+                            danger
+                            onClick={() => onDelete(record._id)}
+                        />
                     </Tooltip>
                 </Space>
             ),

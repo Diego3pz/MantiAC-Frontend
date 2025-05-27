@@ -3,8 +3,14 @@ import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { formatDate } from "../../../utils/utils";
 import { useNavigate } from "react-router-dom";
 
-// Esta función recibe el equipmentId y retorna las columnas
-export function useEquipmentDetailsColumns(equipmentId: string) {
+interface EquipmentDetailsColumnProps {
+    handleView: (id: string) => void;
+    handleEdit: (id: string) => void;
+    handleDelete: (id: string) => void;
+    equipmentId: string;
+}
+
+export function useEquipmentDetailsColumns({ equipmentId, handleView, handleEdit, handleDelete }: EquipmentDetailsColumnProps) {
     const navigate = useNavigate();
 
     return [
@@ -65,13 +71,13 @@ export function useEquipmentDetailsColumns(equipmentId: string) {
             render: (_: string, record: any) => (
                 <Space>
                     <Tooltip title="Ver detalles">
-                        <Button icon={<EyeOutlined />} onClick={() => navigate(`/equipments/${equipmentId}/maintenance/${record._id}`)} />
+                        <Button icon={<EyeOutlined />} onClick={() => handleView(record._id)} />
                     </Tooltip>
                     <Tooltip title="Editar">
-                        <Button icon={<EditOutlined />} onClick={() => navigate(`/equipments/${equipmentId}/maintenance/${record._id}/edit`)} />
+                        <Button icon={<EditOutlined />} onClick={() => handleEdit(record._id)} />
                     </Tooltip>
                     <Tooltip title="Eliminar">
-                        <Button icon={<DeleteOutlined />} danger />
+                        <Button icon={<DeleteOutlined />} danger onClick={() => handleDelete(record._id)} />
                     </Tooltip>
                 </Space>
             ),

@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 import MaintenanceForm from "../../components/AppLayout/Maintenance/MaintenanceForm"
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Card } from '@tremor/react';
-import { createMaintenance } from "../../services/EquipmentAPI"
+import { createMaintenance } from "../../services/MaintenanceAPI"
 import type { MaintenanceFormData } from "../../types"
 
 

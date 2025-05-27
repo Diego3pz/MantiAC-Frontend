@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { updateMaintenance } from "../../../services/EquipmentAPI";
+import { updateMaintenance } from "../../../services/MaintenanceAPI";
 
 type EditMaintenanceFormProps = {
     data: Maintenance; // Cambia aquí
@@ -16,6 +16,7 @@ export default function EditMaintenanceForm({ data }: EditMaintenanceFormProps) 
     const navigate = useNavigate();
     const params = useParams();
     const maintenanceId = params.maintenanceId!;
+    const equipmentId = data.equipment?._id;
 
     const formatDate = (isoDate: string) => isoDate.split("T")[0];
 
@@ -43,6 +44,9 @@ export default function EditMaintenanceForm({ data }: EditMaintenanceFormProps) 
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['maintenances'] });
             queryClient.invalidateQueries({ queryKey: ['maintenance', maintenanceId] });
+            if (equipmentId) {
+                queryClient.invalidateQueries({ queryKey: ['editMaintenance', maintenanceId] });
+            }
             toast.success(data);
             navigate(-1);
         },
@@ -52,8 +56,15 @@ export default function EditMaintenanceForm({ data }: EditMaintenanceFormProps) 
     });
 
     const handleForm = (formData: MaintenanceFormData) => {
+        let cleanFormData = { ...formData };
+
+        if (formData.type !== "Correctivo") {
+            delete cleanFormData.description;
+            delete cleanFormData.cost;
+        }
+
         const data = {
-            formData,
+            formData: cleanFormData,
             maintenanceId
         };
         mutate(data);

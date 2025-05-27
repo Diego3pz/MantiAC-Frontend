@@ -23,7 +23,7 @@ export function TableList({ data }: TableListProps) {
     return (
         <Card>
             <h3 className="text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold mb-2">
-                Próximos mantenimientos
+                Próximos mantenimientos en los próximos 7 días
             </h3>
             <div className="overflow-x-auto">
                 <Table className="mt-2 w-full">

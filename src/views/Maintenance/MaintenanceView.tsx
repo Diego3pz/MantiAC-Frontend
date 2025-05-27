@@ -1,16 +1,19 @@
-import { Table } from 'antd';
-import { getAllEquipments, GetAllMaintenance } from '../../services/EquipmentAPI';
-import { useQuery } from '@tanstack/react-query';
+import { Modal, Table } from 'antd';
+import { deleteMaintenance, GetAllMaintenance } from '../../services/MaintenanceAPI';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import SearchBar from '../../components/atoms/Search';
 import { useNavigate } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
 import { useMaintenanceColumns } from '../../components/AppLayout/Maintenance/MaintenanceColums';
+import { getAllEquipments } from '../../services/EquipmentAPI';
 
 
 
 export default function MaintenanceView() {
-  const columns = useMaintenanceColumns();
-  
+
+
   const navigate = useNavigate();
   const [search, setSearch] = useState('')
 
@@ -25,6 +28,18 @@ export default function MaintenanceView() {
     retry: false
   });
 
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: deleteMaintenance,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['maintenances'] });
+      toast.success(data)
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    }
+  });
+
   const dataWithKeys = data?.map((item) => ({
     ...item,
     key: item._id,
@@ -37,6 +52,17 @@ export default function MaintenanceView() {
     (item.equipment.location && item.equipment.location.toLowerCase().includes(search.toLowerCase())) ||
     (item.performedBy && item.performedBy.toLowerCase().includes(search.toLowerCase()))
   );
+
+  const handleDelete = (id: string) => {
+    Modal.confirm({
+      title: '¿Seguro que deseas eliminar este mantenimiento?',
+      okText: 'Sí, eliminar',
+      okType: 'danger',
+      cancelText: 'Cancelar',
+      onOk: () => mutate(id),
+    });
+  };
+  const columns = useMaintenanceColumns(handleDelete);
 
   if (isLoading) return 'Cargando...'
   if (data) {

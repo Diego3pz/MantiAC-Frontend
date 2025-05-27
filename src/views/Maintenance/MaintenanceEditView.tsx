@@ -1,5 +1,5 @@
 import { Navigate, useParams } from "react-router-dom";
-import { getMaintenanceById } from "../../services/EquipmentAPI";
+import { getMaintenanceById } from "../../services/MaintenanceAPI";
 import { useQuery } from "@tanstack/react-query";
 import EditMaintenanceForm from "../../components/AppLayout/Maintenance/EditMaintenanceForm";
 

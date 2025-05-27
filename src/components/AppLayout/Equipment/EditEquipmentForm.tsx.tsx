@@ -30,10 +30,10 @@ export default function EditEquipmentForm({ data }: EditEquipmentFormProps) {
     const { mutate } = useMutation({
         mutationFn: updateEquipment,
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ['equipments'] })
+            queryClient.invalidateQueries({ queryKey: ['equipment', equipmentId] })
             queryClient.invalidateQueries({ queryKey: ['editEquipments', equipmentId] })
             toast.success(data)
-            navigate('/equipments')
+            navigate(`/equipments/${equipmentId}`)
         },
         onError: (error) => {
             toast.error(error.message)

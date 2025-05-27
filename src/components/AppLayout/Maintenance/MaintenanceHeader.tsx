@@ -10,6 +10,7 @@ interface Props {
 }
 
 export function MaintenanceHeader({ onBack, onEdit, onDelete, onPrint, onDownloadPDF }: Props) {
+
     return (
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <div>

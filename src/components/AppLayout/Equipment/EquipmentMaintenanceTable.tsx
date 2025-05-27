@@ -1,11 +1,13 @@
-import { Card, Button, Table, Tag, Divider, Skeleton, Pagination } from "antd";
-import { PlusOutlined, EyeOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Card, Button, Table, Tag, Divider, Skeleton, Pagination, Modal } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { GetAllMaintenanceByEquipment } from "../../../services/EquipmentAPI";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteMaintenance, GetAllMaintenanceByEquipment } from "../../../services/MaintenanceAPI";
 import { formatDate } from "../../../utils/utils";
 import { useEquipmentDetailsColumns } from "./EquipmentDetailsColums";
+import { EquipmentMaintenanceMobileActions } from "./EquipmentMaintenanceMobileActions";
+import { toast } from "react-toastify";
 
 
 
@@ -14,7 +16,7 @@ interface EquipmentMaintenanceTableProps {
 }
 
 export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceTableProps) {
-    const columns = useEquipmentDetailsColumns(equipmentId!);
+
     const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(false);
     const [currentMobilePage, setCurrentMobilePage] = useState(1);
@@ -25,6 +27,18 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
         queryFn: () => GetAllMaintenanceByEquipment(equipmentId),
         enabled: !!equipmentId,
         retry: false
+    });
+
+    const queryClient = useQueryClient();
+    const { mutate } = useMutation({
+        mutationFn: deleteMaintenance,
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({ queryKey: ['maintenance', equipmentId] });
+            toast.success(data)
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        }
     });
 
     const mantenimientosArray = Array.isArray(data) ? data : [];
@@ -38,6 +52,22 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+
+
+    const handleView = (id: string) => navigate(`/equipments/${equipmentId}/maintenance/${id}`);
+    const handleEdit = (id: string) => navigate(`/equipments/${equipmentId}/maintenance/${id}/edit`);
+    const handleDelete = (id: string) => {
+        Modal.confirm({
+            title: '¿Seguro que deseas eliminar este mantenimiento?',
+            okText: 'Sí, eliminar',
+            okType: 'danger',
+            cancelText: 'Cancelar',
+            onOk: () => mutate(id),
+        });
+    };
+
+    const columns = useEquipmentDetailsColumns({ equipmentId, handleDelete, handleView, handleEdit });
 
     // Paginación para móvil
     const startIdx = (currentMobilePage - 1) * MOBILE_PAGE_SIZE;
@@ -119,21 +149,11 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
                                         <b>Costo:</b> ${m.cost}
                                     </div>
                                 </div>
-                                <div className="flex justify-between items-center border-t pt-2">
-                                    <button className="flex-1 flex justify-center items-center"
-                                        onClick={() => navigate(`/equipments/${equipmentId}/maintenance/${m._id}`)}
-                                    >
-                                        <EyeOutlined style={{ fontSize: 20 }} />
-                                    </button>
-                                    <div className="h-6 border-l" />
-                                    <button className="flex-1 flex justify-center items-center">
-                                        <EditOutlined style={{ fontSize: 20 }} />
-                                    </button>
-                                    <div className="h-6 border-l" />
-                                    <button className="flex-1 flex justify-center items-center">
-                                        <DeleteOutlined style={{ fontSize: 20, color: "#ff4d4f" }} />
-                                    </button>
-                                </div>
+                                <EquipmentMaintenanceMobileActions
+                                    onView={() => navigate(`/equipments/${equipmentId}/maintenance/${m._id}`)}
+                                    onEdit={() => navigate(`/equipments/${equipmentId}/maintenance/${m._id}/edit`)}
+                                    onDelete={() => handleDelete(m._id)}
+                                />
                             </Card>
                         ))}
                     </div>
