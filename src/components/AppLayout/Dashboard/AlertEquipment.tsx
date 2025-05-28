@@ -1,4 +1,5 @@
 import { Card, Badge } from "@tremor/react";
+import { useNavigate } from "react-router-dom";
 
 interface EquipoAlerta {
   equipo: string;
@@ -13,6 +14,8 @@ interface EquiposConAlertaProps {
 }
 
 export function AlertEquipmentComponent({ data, onMarkCompleted }: EquiposConAlertaProps) {
+  const navigate = useNavigate();
+
   return (
     <Card id="alertas">
       <h3 className="font-semibold mb-2">Equipos con alerta</h3>
@@ -23,7 +26,15 @@ export function AlertEquipmentComponent({ data, onMarkCompleted }: EquiposConAle
           data.map((item, idx) => (
             <li key={idx} className="flex items-center gap-2 mb-2 justify-between">
               <div className="flex items-center gap-2">
-                <Badge color="red">{item.equipo}</Badge>
+                <Badge
+                  color="red"
+                  className="cursor-pointer"
+                  onClick={() => item.equipmentId && navigate(`/equipments/${item.equipmentId}`)}
+                  title="Ver detalles del equipo"
+                  style={{ textDecoration: "underline" }}
+                >
+                  {item.equipo}
+                </Badge>
                 <span className="text-sm">{item.motivo}</span>
               </div>
               {onMarkCompleted && item.id && item.equipmentId && (

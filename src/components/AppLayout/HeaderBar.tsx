@@ -10,7 +10,7 @@ interface HeaderBarProps {
 }
 
 const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOpen }) => (
-    <Header className="bg-white px-4 sm:px-6 flex items-center justify-between shadow-sm gap-2 h-16 border-b border-gray-200">
+    <Header className="bg-white dark:bg-gray-900 dark:text-gray-100 px-4 sm:px-6 flex items-center justify-between shadow-sm gap-2 h-16 border-b border-gray-200 dark:border-gray-800 transition-colors">
         {/* Botón solo en móvil y cuando el menú está cerrado */}
         {isMobile && !mobileOpen && (
             <Button
@@ -33,7 +33,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOp
             <Avatar className="bg-orange-100 text-orange-400" size="large">
                 D
             </Avatar>
-            <span className="text-gray-600 hidden sm:inline">Delicious Burger</span>
+            <span className="text-gray-600 dark:text-gray-200 hidden sm:inline">Delicious Burger</span>
             <Space>
                 <Badge count={1} className='cursor-pointer'>
                     <Avatar shape="square" icon={<MailOutlined />} />

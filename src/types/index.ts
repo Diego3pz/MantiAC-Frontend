@@ -55,3 +55,10 @@ export type MaintenanceFormData = Omit<Pick<Maintenance, "type" | "date" | "perf
 };
 export const MaintenanceArraySchema = z.array(MaintenanceSchema);
 export type MaintenanceArray = z.infer<typeof MaintenanceArraySchema>;
+
+export interface AlertEquipmentData {
+  equipo: string;
+  motivo: string;
+  id: string;
+  equipmentId: string;
+}

@@ -1,4 +1,5 @@
 import { Input } from "antd";
+import '../../index.css'
 
 type SearchBarProps = {
   value: string;
@@ -13,7 +14,7 @@ export default function SearchBar({ value, onChange, placeholder }: SearchBarPro
       onChange={e => onChange(e.target.value)}
       placeholder={placeholder || "Buscar..."}
       allowClear
-      className="w-full sm:w-96 p-3"
+      className="w-full sm:w-96"
     />
   );
 }

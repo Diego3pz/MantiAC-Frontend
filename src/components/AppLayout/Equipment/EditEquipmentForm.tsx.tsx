@@ -50,7 +50,7 @@ export default function EditEquipmentForm({ data }: EditEquipmentFormProps) {
     return (
 
         <>
-            <div className=" flex items-center justify-center bg-gray-50 py-8">
+            <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-950 py-8">
                 <Card className="w-full max-w-2xl mx-auto p-8 shadow-lg">
                     <div className="flex flex-col items-center mb-8">
                         <PlusCircleOutlined style={{ fontSize: 48, color: "#2563eb" }} />

@@ -1,7 +1,6 @@
 import { Button, Tag, Space, Tooltip } from "antd";
 import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { formatDate } from "../../../utils/utils";
-import { useNavigate } from "react-router-dom";
 
 interface EquipmentDetailsColumnProps {
     handleView: (id: string) => void;
@@ -10,8 +9,7 @@ interface EquipmentDetailsColumnProps {
     equipmentId: string;
 }
 
-export function useEquipmentDetailsColumns({ equipmentId, handleView, handleEdit, handleDelete }: EquipmentDetailsColumnProps) {
-    const navigate = useNavigate();
+export function useEquipmentDetailsColumns({ handleView, handleEdit, handleDelete }: EquipmentDetailsColumnProps) {
 
     return [
         {
@@ -71,13 +69,28 @@ export function useEquipmentDetailsColumns({ equipmentId, handleView, handleEdit
             render: (_: string, record: any) => (
                 <Space>
                     <Tooltip title="Ver detalles">
-                        <Button icon={<EyeOutlined />} onClick={() => handleView(record._id)} />
+                        <Button
+                            icon={<EyeOutlined />}
+                            type="text"
+                            className="text-blue-600 dark:text-blue-300 hover:!bg-blue-100 dark:hover:!bg-blue-900"
+                            onClick={() => handleView(record._id)}
+                        />
                     </Tooltip>
                     <Tooltip title="Editar">
-                        <Button icon={<EditOutlined />} onClick={() => handleEdit(record._id)} />
+                        <Button
+                            icon={<EditOutlined />}
+                            type="text"
+                            className="text-yellow-600 dark:text-yellow-300 hover:!bg-yellow-100 dark:hover:!bg-yellow-900"
+                            onClick={() => handleEdit(record._id)}
+                        />
                     </Tooltip>
                     <Tooltip title="Eliminar">
-                        <Button icon={<DeleteOutlined />} danger onClick={() => handleDelete(record._id)} />
+                        <Button
+                            icon={<DeleteOutlined />}
+                            type="text"
+                            className="text-red-600 dark:text-red-400 hover:!bg-red-100 dark:hover:!bg-red-900"
+                            onClick={() => handleDelete(record._id)}
+                        />
                     </Tooltip>
                 </Space>
             ),

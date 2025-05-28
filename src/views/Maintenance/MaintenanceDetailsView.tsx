@@ -90,7 +90,7 @@ export default function MaintenanceDetailsView() {
             />
             <Divider className="my-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white rounded-xl shadow p-6 border">
+                <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border border-gray-200 dark:border-gray-800 dark:text-gray-100 transition-colors">
                     <MaintenanceInfo maintenance={data} />
                     {!data.completed && (
                         <button
@@ -102,7 +102,7 @@ export default function MaintenanceDetailsView() {
                         </button>
                     )}
                 </div>
-                <div className="bg-white rounded-xl shadow p-6 border">
+                <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border border-gray-200 dark:border-gray-800 dark:text-gray-100 transition-colors">
                     <EquipmentInfo equipment={data.equipment} />
                 </div>
             </div>

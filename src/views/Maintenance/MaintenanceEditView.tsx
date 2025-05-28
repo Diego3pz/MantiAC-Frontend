@@ -13,12 +13,8 @@ export default function MaintenanceEditView() {
     queryFn: () => getMaintenanceById(maintenanceId),
     retry: false
   })
-
-  console.log(data);
-  
-
   if (isLoading) return 'Cargando...'
   if (isError) return <Navigate to='/404' />
   if (data) return <EditMaintenanceForm data={data} />
 }
-//     
+     

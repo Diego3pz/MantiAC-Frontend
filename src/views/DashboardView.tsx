@@ -1,4 +1,3 @@
-import { AlertEquipmentComponent } from "../components/AppLayout/Dashboard/AlertEquipment";
 import { CardComponent } from "../components/AppLayout/Dashboard/Card";
 import { ChartComponent } from "../components/AppLayout/Dashboard/Chart";
 import { TableList } from "../components/AppLayout/Dashboard/TableList";
@@ -7,9 +6,17 @@ import { getAllEquipments } from "../services/EquipmentAPI";
 import { GetAllMaintenance, updateMaintenanceStatus } from "../services/MaintenanceAPI";
 import { formatDate } from "../utils/utils";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import { ProgressBar } from "@tremor/react";
+import { ModalAlertas } from "../components/AppLayout/Dashboard/ModalAlertas";
+import { BannerAlerta } from "../components/AppLayout/Dashboard/BannerAlerta";
+
 
 export default function DashboardView() {
+
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const { data: equipos, isLoading: loadingEquipos } = useQuery({
+
     queryKey: ['equipments'],
     queryFn: getAllEquipments,
     retry: false
@@ -72,50 +79,59 @@ export default function DashboardView() {
     }
   });
 
+  const totalMantenimientos = (mantenimientos ?? []).length;
+  const mantenimientosPendientes = (mantenimientos ?? []).filter(m => !m.completed).length;
+
+  const porcentajeAlDia = totalMantenimientos > 0
+    ? Math.round(((totalMantenimientos - mantenimientosPendientes) / totalMantenimientos) * 100)
+    : 100;
+
   if (loadingEquipos || loadingMantenimientos) return <div>Cargando...</div>;
 
   return (
     <>
-      {equiposConAlerta.length > 0 && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 flex items-center gap-2 rounded">
-          <span className="text-2xl">⚠️</span>
-          <span>
-            {equiposConAlerta.length} equipo(s) con mantenimiento atrasado.
-            <a
-              href="#alertas"
-              className="ml-4  text-blue-600"
-            >
-              Ver detalles
-            </a>
-          </span>
-        </div>
-      )}
+      <ModalAlertas
+        open={showAlertModal}
+        onClose={() => setShowAlertModal(false)}
+        equiposConAlerta={equiposConAlerta}
+        onMarkCompleted={(maintenanceId, equipmentId) =>
+          marcarRealizado({ maintenanceId, equipmentId })
+        }
+      />
+      <BannerAlerta
+        equiposConAlerta={equiposConAlerta}
+        onVerDetalles={() => setShowAlertModal(true)}
+      />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <CardComponent title="Total de Equipos" value={totalEquipos.toString()} />
         <CardComponent title="Mantenimientos este mes" value={mantenimientosMes.toString()} />
         <CardComponent title="Próximos mantenimientos" value={proximosMantenimientos.length.toString()} />
       </div>
+      <div className="mt-6">
+        <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border flex flex-col gap-2 dark:border-gray-800 transition-colors">
+          <span className="font-semibold mb-2">Porcentaje de equipos al día</span>
+          <ProgressBar value={porcentajeAlDia} color={porcentajeAlDia === 100 ? "green" : "yellow"} />
+          <span className="text-sm text-gray-600 dark:text-gray-400">
+            {porcentajeAlDia}% de los mantenimientos están al día ({mantenimientosPendientes} pendiente(s))
+          </span>
+        </div>
+      </div>
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
         <ChartComponent data={mantenimientosPorTipo} />
-        <AlertEquipmentComponent
-          data={equiposConAlerta}
-          onMarkCompleted={(maintenanceId, equipmentId) =>
-            marcarRealizado({ maintenanceId, equipmentId })
-          }
-        />
+        <div className="">
+          <TableList
+            data={proximosMantenimientos.map(m => ({
+              ...m,
+              equipo: typeof m.equipment === "string" ? m.equipment : m.equipment?.brand ?? "Desconocido",
+              fecha: formatDate(m.date),
+              tipo: m.type
+            }))}
+          />
+        </div>
       </div>
 
-      <div className="mt-6">
-        <TableList
-          data={proximosMantenimientos.map(m => ({
-            ...m,
-            equipo: typeof m.equipment === "string" ? m.equipment : m.equipment?.brand ?? "Desconocido",
-            fecha: formatDate(m.date),
-            tipo: m.type
-          }))}
-        />
-      </div>
+
     </>
   );
 }

@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.dark .ant-input,
+.dark .ant-input-search,
+.dark .ant-input-affix-wrapper {
+  background-color: #2a2d3b !important;
+  color: #dbeafe !important; 
+  border-color: #272c3b !important;
+}
+.dark .ant-input::placeholder {
+  color: #8c9bab !important;
+}
+
+.dark .ant-table-tbody > tr.bg-red-600 > td {
+  background-color: #a61e1e !important;
+  color: #fff !important;
+}
+
+.ant-table-tbody > tr.bg-red-600 > td {
+  background-color: #dc2626 !important;
+  color: #fff !important;
+}

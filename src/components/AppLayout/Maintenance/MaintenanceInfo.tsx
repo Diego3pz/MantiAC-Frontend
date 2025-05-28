@@ -34,7 +34,7 @@ export function MaintenanceInfo({ maintenance }: { maintenance: any }) {
                 </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                     <div>
                         <div className="flex items-center gap-2">
                             <CalendarOutlined />

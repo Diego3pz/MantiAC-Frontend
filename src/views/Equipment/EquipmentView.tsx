@@ -55,7 +55,7 @@ export default function EquipmentView() {
   if (isLoading) {
     return (
       <CardTremor
-        className="max-w-6xl mx-auto mt-4 px-2 py-4"
+        className=" max-w-6xl mx-auto mt-4 px-2 py-4"
         style={{ minHeight: 600 }}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
@@ -75,14 +75,16 @@ export default function EquipmentView() {
   if (data || equiposFiltrados) return (
     <>
       <CardTremor
-        className="max-w-6xl mx-auto mt-4 px-2 py-4"
+        className=" max-w-6xl mx-auto mt-4 px-2 py-4"
         style={{ minHeight: 600 }}
       >
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Buscar por marca, serie o ubicación"
-        />
+        <div className="px-3 mb-2">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Buscar por marca, serie o ubicación"
+          />
+        </div>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4 px-3">
           <h2 className="text-xl font-bold">Equipos registrados</h2>
           <Button
@@ -151,7 +153,7 @@ export default function EquipmentView() {
                       />
                     </Tooltip>
                   ]}
-                  className="mb-2"
+                  className="bg-gray-800 dark:bg-gray-800 dark:text-blue-100 border border-gray-900 transition-colors"
                   bodyStyle={{ paddingBottom: 0 }}
                 >
                   <div className="flex flex-col items-center mb-2">

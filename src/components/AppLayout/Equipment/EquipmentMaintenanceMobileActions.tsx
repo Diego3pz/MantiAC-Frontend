@@ -8,17 +8,17 @@ interface Props {
 
 export function EquipmentMaintenanceMobileActions({ onView, onEdit, onDelete }: Props) {
     return (
-        <div className="flex justify-between items-center border-t pt-2">
-            <button className="flex-1 flex justify-center items-center" onClick={onView}>
-                <EyeOutlined style={{ fontSize: 20 }} />
+        <div className="flex justify-between items-center border-t pt-2 border-gray-200 dark:border-gray-700">
+            <button className="flex-1 flex justify-center items-center text-gray-200" onClick={onView}>
+                <EyeOutlined style={{ fontSize: 16 }} />
             </button>
             <div className="h-6 border-l" />
-            <button className="flex-1 flex justify-center items-center" onClick={onEdit}>
-                <EditOutlined style={{ fontSize: 20 }} />
+            <button className="flex-1 flex justify-center items-center text-gray-200" onClick={onEdit}>
+                <EditOutlined style={{ fontSize: 16 }} />
             </button>
             <div className="h-6 border-l" />
-            <button className="flex-1 flex justify-center items-center" onClick={onDelete}>
-                <DeleteOutlined style={{ fontSize: 20, color: "#ff4d4f" }} />
+            <button className="flex-1 flex justify-center items-center text-gray-200" onClick={onDelete}>
+                <DeleteOutlined style={{ fontSize: 16 }} />
             </button>
         </div>
     );

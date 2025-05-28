@@ -26,16 +26,33 @@ export function MaintenanceHeader({ onBack, onEdit, onDelete, onPrint, onDownloa
             </div>
             <Space>
                 <Tooltip title="Editar">
-                    <Button icon={<EditOutlined />} onClick={onEdit} />
+                    <Button
+                        icon={<EditOutlined />}
+                        onClick={onEdit}
+                        className="text-yellow-600 dark:text-yellow-300 hover:!bg-yellow-100 dark:hover:!bg-yellow-900"
+                    />
                 </Tooltip>
                 <Tooltip title="Eliminar">
-                    <Button icon={<DeleteOutlined />} danger onClick={onDelete} />
+                    <Button
+                        icon={<DeleteOutlined />}
+                        danger
+                        onClick={onDelete}
+                        className="text-red-600 dark:text-red-400 hover:!bg-red-100 dark:hover:!bg-red-900"
+                    />
                 </Tooltip>
                 <Tooltip title="Imprimir">
-                    <Button icon={<PrinterOutlined />} onClick={onPrint} />
+                    <Button
+                        icon={<PrinterOutlined />}
+                        onClick={onPrint}
+                        className="text-blue-600 dark:text-blue-300 hover:!bg-blue-100 dark:hover:!bg-blue-900"
+                    />
                 </Tooltip>
                 <Tooltip title="Descargar PDF">
-                    <Button icon={<FilePdfOutlined />} onClick={onDownloadPDF} />
+                    <Button
+                        icon={<FilePdfOutlined />}
+                        onClick={onDownloadPDF}
+                        className="text-rose-600 dark:text-rose-300 hover:!bg-rose-100 dark:hover:!bg-rose-900"
+                    />
                 </Tooltip>
             </Space>
         </div>

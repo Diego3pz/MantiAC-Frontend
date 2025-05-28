@@ -95,13 +95,16 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
     );
 
     if (data) return (
-        <Card className="mb-6">
+        <Card
+            className="mb-6 bg-white text-gray-900 border border-gray-200
+        dark:bg-gray-900 dark:text-gray-100 dark:border-gray-800 transition-colors"
+        >
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                 <span>
                     <b>Mantenimientos asociados:</b>
                 </span>
                 <Button
-                    type="primary" className="mb-2" icon={<PlusOutlined />}
+                    type="primary" className="mb-2 dark:bg-gray-700" icon={<PlusOutlined />}
                     onClick={() => navigate(`/equipments/${equipmentId}/maintenance/create`)}>
                     Registrar mantenimiento
                 </Button>
@@ -110,8 +113,12 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
                 <>
                     <div className="flex flex-col gap-4">
                         {mantenimientosMobile.map((m) => (
-                            <Card key={m._id} size="small" className="shadow">
-                                <div className="flex flex-col items-start gap-1 mb-2">
+                            <Card
+                                key={m._id}
+                                size="small"
+                                className={`shadow ${!m.completed && new Date(m.date) < new Date() ? "bg-red-500" : ""}`}
+                            >
+                                <div className="flex flex-col items-start gap-2 mb-2">
                                     <Tag
                                         color={m.completed ? "green" : "orange"}
                                         className="font-semibold text-xs mb-1"
@@ -136,7 +143,7 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
                                     </Tag>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <div className="text-gray-500 mb-1">
+                                    <div className="mb-1">
                                         <b>Fecha:</b> {formatDate(m.date)}
                                     </div>
                                     <div className="mb-1">
@@ -177,6 +184,12 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
                     size="small"
                     scroll={{ x: 'max-content' }}
                     rowKey="_id"
+                    className="dark:[&_.ant-table]:bg-gray-900 dark:[&_.ant-table-thead>tr>th]:bg-gray-950 dark:[&_.ant-table-thead>tr>th]:text-gray-100 dark:[&_.ant-table-tbody>tr>td]:bg-gray-950 dark:[&_.ant-table-tbody>tr>td]:text-gray-100 dark:[&_.ant-table]:border-gray-900"
+                    rowClassName={(record) =>
+                        !record.completed && new Date(record.date) < new Date()
+                            ? "bg-red-600"
+                            : ""
+                    }
                 />
             )}
         </Card>
