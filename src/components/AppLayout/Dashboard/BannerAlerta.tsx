@@ -20,7 +20,7 @@ export function BannerAlerta({ equiposConAlerta, onVerDetalles }: BannerAlertaPr
                         p-4 mb-4 flex items-center gap-2 rounded transition-colors">
             <span className="text-2xl">⚠️</span>
             <span>
-                {equiposConAlerta.length} equipo(s) con mantenimiento atrasado.
+                {equiposConAlerta.length} mantenimientos atrasados.
                 <a
                     href="#alertas"
                     className="ml-4 text-blue-600 dark:text-blue-300 underline cursor-pointer"

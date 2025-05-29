@@ -112,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             collapsible
             collapsed={collapsed}
             trigger={null}
-            className="bg-white dark:bg-gray-900 dark:text-gray-100 shadow-md transition-colors"
+            className="bg-white dark:bg-gray-900 dark:text-gray-100 shadow-md transition-colors border-r border-gray-100 dark:border-gray-800"
             width={220}
             breakpoint="md"
         >

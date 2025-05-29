@@ -116,30 +116,31 @@ export default function EquipmentView() {
               {equiposPagina?.map((equipo) => (
                 <Card
                   key={equipo._id}
-                  style={{ minWidth: 220, maxWidth: 340, width: "100%" }}
+                  style={{ minWidth: 220, maxWidth: 340, width: "100%", minHeight: 260, display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+                  className="bg-gray-100 dark:bg-gray-800 dark:text-blue-100 border border-gray-200 dark:border-gray-900 transition-colors"
+                  bodyStyle={{ display: "flex", flexDirection: "column", flex: 1, paddingBottom: 0 }}
                   actions={[
                     <Tooltip title="Ver detalles">
                       <EyeOutlined
                         key="view"
                         title="Ver detalles"
-                        style={{ color: "#1677ff" }} // azul
+                        style={{ color: "#1677ff" }}
                         onClick={() => navigate(`/equipments/${equipo._id}`)}
                       />
                     </Tooltip>,
                     <Tooltip title="Editar">
-                      < EditOutlined
+                      <EditOutlined
                         key="edit"
                         title="Editar"
-                        style={{ color: "#faad14" }} // naranja
+                        style={{ color: "#faad14" }}
                         onClick={() => navigate(`/equipments/${equipo._id}/edit`)}
                       />
                     </Tooltip>,
-
                     <Tooltip title="Eliminar">
-                      < DeleteOutlined
+                      <DeleteOutlined
                         key="delete"
                         title="Eliminar"
-                        style={{ color: "#ff4d4f" }} // rojo
+                        style={{ color: "#ff4d4f" }}
                         onClick={() => {
                           modal.confirm({
                             title: '¿Eliminar equipo?',
@@ -153,23 +154,70 @@ export default function EquipmentView() {
                       />
                     </Tooltip>
                   ]}
-                  className="bg-gray-800 dark:bg-gray-800 dark:text-blue-100 border border-gray-900 transition-colors"
-                  bodyStyle={{ paddingBottom: 0 }}
                 >
-                  <div className="flex flex-col items-center mb-2">
-                    <AntDesignOutlined style={{ fontSize: 48, color: '#b0b7c3' }} />
-                    <div className="text-lg font-semibold mt-2 mb-1">{equipo.brand}</div>
-                  </div>
-                  <div className="mb-2">
-                    <div className="flex items-center gap-2 mb-1">
-                      <CreditCardOutlined />
-                      <span className="font-semibold">N.º Serie:</span>
-                      <span>{equipo.serialNumber}</span>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
+                    <div className="flex flex-col items-center mb-2">
+                      <AntDesignOutlined style={{ fontSize: 48, color: '#b0b7c3', marginBottom: 6 }} />
+                      <Tooltip title={equipo.brand}>
+                        <div
+                          className="break-words text-center font-bold text-lg"
+                          style={{
+                            wordBreak: "break-word",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 1,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "100%"
+                          }}
+                        >
+                          {equipo.brand}
+                        </div>
+                      </Tooltip>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <EnvironmentOutlined />
-                      <span className="font-semibold">Ubicación:</span>
-                      <span>{equipo.location}</span>
+                    <div className="mb-2">
+                      <div className="flex items-center gap-2 mb-1">
+                        <CreditCardOutlined />
+                        <span className="font-semibold">N.º Serie:</span>
+                        <Tooltip title={equipo.serialNumber}>
+                          <span
+                            className="break-words"
+                            style={{
+                              wordBreak: "break-word",
+                              display: "-webkit-box",
+                              WebkitLineClamp: 1,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              maxWidth: "120px",
+                              minWidth: 0
+                            }}
+                          >
+                            {equipo.serialNumber}
+                          </span>
+                        </Tooltip>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <EnvironmentOutlined />
+                        <span className="font-semibold">Ubicación:</span>
+                        <Tooltip title={equipo.location}>
+                          <span
+                            className={`break-words ${equipo.location.length > 25 ? 'text-xs' : 'text-sm'} transition-all`}
+                            style={{
+                              wordBreak: "break-word",
+                              display: "-webkit-box",
+                              WebkitLineClamp: 1,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              maxWidth: "180px",
+                              minWidth: 0
+                            }}
+                          >
+                            {equipo.location}
+                          </span>
+                        </Tooltip>
+                      </div>
                     </div>
                   </div>
                 </Card>

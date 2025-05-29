@@ -24,8 +24,11 @@ export function AlertEquipmentComponent({ data, onMarkCompleted }: EquiposConAle
           <li className="text-gray-500">Sin alertas</li>
         ) : (
           data.map((item, idx) => (
-            <li key={idx} className="flex items-center gap-2 mb-2 justify-between">
-              <div className="flex items-center gap-2">
+            <li
+              key={idx}
+              className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2 justify-between"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 ">
                 <Badge
                   color="red"
                   className="cursor-pointer"
@@ -36,15 +39,15 @@ export function AlertEquipmentComponent({ data, onMarkCompleted }: EquiposConAle
                   {item.equipo}
                 </Badge>
                 <span className="text-sm">{item.motivo}</span>
+                {onMarkCompleted && item.id && item.equipmentId && (
+                  <button
+                    className="w-full sm:w-auto px-2 py-1 bg-green-500 text-white rounded text-xs mb-2"
+                    onClick={() => onMarkCompleted(item.id!, item.equipmentId!)}
+                  >
+                    Marcar como realizado
+                  </button>
+                )}
               </div>
-              {onMarkCompleted && item.id && item.equipmentId && (
-                <button
-                  className="ml-2 px-2 py-1 bg-green-500 text-white rounded text-xs"
-                  onClick={() => onMarkCompleted(item.id!, item.equipmentId!)}
-                >
-                  Marcar como realizado
-                </button>
-              )}
             </li>
           ))
         )}

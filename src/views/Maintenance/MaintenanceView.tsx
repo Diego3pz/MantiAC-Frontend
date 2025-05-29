@@ -4,12 +4,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import SearchBar from '../../components/atoms/Search';
 import { useNavigate } from 'react-router-dom';
-
 import { toast } from 'react-toastify';
 import { useMaintenanceColumns } from '../../components/AppLayout/Maintenance/MaintenanceColums';
 import { getAllEquipments } from '../../services/EquipmentAPI';
-
-
 
 export default function MaintenanceView() {
 
@@ -60,6 +57,11 @@ export default function MaintenanceView() {
       okType: 'danger',
       cancelText: 'Cancelar',
       onOk: () => mutate(id),
+      modalRender: (node) => (
+        <div className="bg-white text-gray-900 dark:bg-gray-800 dark:text-blue-100 rounded-lg">
+          {node}
+        </div>
+      ),
     });
   };
   const columns = useMaintenanceColumns(handleDelete);
@@ -69,11 +71,13 @@ export default function MaintenanceView() {
     return (
       <div className="mx-auto mt-8 px-2">
         <h2 className="text-2xl font-bold mb-4">Mantenimientos registrados</h2>
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-          placeholder="Buscar por equipo, técnico o ubicación"
-        />
+        <div className=' mb-4'>
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Buscar por equipo, técnico o ubicación"
+          />
+        </div>
         <Table
           columns={columns}
           dataSource={filteredData}
@@ -81,6 +85,11 @@ export default function MaintenanceView() {
           bordered
           scroll={{ x: 'max-content' }}
           className="w-full"
+          rowClassName={record =>
+            new Date(record.date) < new Date() && !record.completed
+              ? 'bg-red-600 text-white dark:bg-red-800 dark:text-white'
+              : ''
+          }
           locale={{
             emptyText: (
               <div className="text-center py-8 text-gray-500">

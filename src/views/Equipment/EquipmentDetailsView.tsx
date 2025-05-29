@@ -27,7 +27,7 @@ export default function EquipmentDetailsView() {
             <Button
                 icon={<ArrowLeftOutlined />}
                 type="link"
-                className="pl-0 text-blue-600 dark:text-blue-400"
+                className="pl-0 text-blue-600 dark:text-blue-400 mb-2"
                 onClick={handleBack}
             >
                 Regresar

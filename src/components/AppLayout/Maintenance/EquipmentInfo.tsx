@@ -8,46 +8,48 @@ import {
 export function EquipmentInfo({ equipment }: { equipment: any }) {
     return (
         <div>
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex flex-col items-center md:flex-row md:items-center gap-2 mb-6">
                 <TagOutlined style={{ fontSize: 24 }} />
-                <h3 className="text-2xl font-bold flex items-center gap-2">Equipo relacionado</h3>
+                <h3 className="text-2xl font-bold flex flex-col items-center md:flex-row md:items-center gap-2 text-center md:text-left">
+                    Equipo relacionado
+                </h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
-                <div className="flex items-center gap-2">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <TagOutlined />
-                            <div className="font-semibold">Marca</div>
-                        </div>
-                        <div>{equipment.brand}</div>
+                <div className="flex flex-col items-center md:items-start gap-1">
+                    <div className="flex items-center gap-2 justify-center md:justify-start w-full">
+                        <TagOutlined />
+                        <div className="font-semibold text-sm md:text-base">Marca</div>
+                    </div>
+                    <div className="break-words text-sm md:text-base max-w-full text-center md:text-left" style={{ wordBreak: "break-word" }}>
+                        {equipment.brand}
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <BarcodeOutlined />
-                            <div className="font-semibold">N.º Serie</div>
-                        </div>
-                        <div>{equipment.serialNumber}</div>
+                <div className="flex flex-col items-center md:items-start gap-1">
+                    <div className="flex items-center gap-2 justify-center md:justify-start w-full">
+                        <BarcodeOutlined />
+                        <div className="font-semibold text-sm md:text-base">N.º Serie</div>
+                    </div>
+                    <div className="break-words text-sm md:text-base max-w-full text-center md:text-left" style={{ wordBreak: "break-word" }}>
+                        {equipment.serialNumber}
                     </div>
                 </div>
-                <div className="flex items-center gap-2 md:col-span-2">
-                    <div>
-                        <div className="flex items-center gap-2">
-                            <EnvironmentOutlined />
-                            <div className="font-semibold">Ubicación</div>
-                        </div>
-                        <div>{equipment.location}</div>
+                <div className="flex flex-col items-center md:items-start gap-1 md:col-span-2">
+                    <div className="flex items-center gap-2 justify-center md:justify-start w-full">
+                        <EnvironmentOutlined />
+                        <div className="font-semibold text-sm md:text-base">Ubicación</div>
+                    </div>
+                    <div className="break-words text-sm md:text-base max-w-full text-center md:text-left" style={{ wordBreak: "break-word" }}>
+                        {equipment.location}
                     </div>
                 </div>
                 {equipment._id && (
-                    <div className="flex items-center gap-2 md:col-span-2">
-                        <div>
-                            <div className="flex items-center gap-2">
-                                <IdcardOutlined />
-                                <div className="font-semibold">ID</div>
-                            </div>
-                            <div>{equipment._id}</div>
+                    <div className="flex flex-col items-center md:items-start gap-1 md:col-span-2">
+                        <div className="flex items-center gap-2 justify-center md:justify-start w-full">
+                            <IdcardOutlined />
+                            <div className="font-semibold text-sm md:text-base">ID</div>
+                        </div>
+                        <div className="break-words text-xs md:text-base max-w-full text-center md:text-left" style={{ wordBreak: "break-word" }}>
+                            {equipment._id}
                         </div>
                     </div>
                 )}

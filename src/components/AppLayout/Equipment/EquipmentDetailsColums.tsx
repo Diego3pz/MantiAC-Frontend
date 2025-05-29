@@ -88,7 +88,7 @@ export function useEquipmentDetailsColumns({ handleView, handleEdit, handleDelet
                         <Button
                             icon={<DeleteOutlined />}
                             type="text"
-                            className="text-red-600 dark:text-red-400 hover:!bg-red-100 dark:hover:!bg-red-900"
+                            className="text-red-400 dark:text-red-400 hover:!bg-red-100 dark:hover:!bg-red-900"
                             onClick={() => handleDelete(record._id)}
                         />
                     </Tooltip>

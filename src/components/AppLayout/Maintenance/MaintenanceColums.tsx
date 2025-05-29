@@ -5,8 +5,12 @@ import type { Maintenance } from "../../../types";
 import type { ColumnsType } from 'antd/es/table';
 import { useNavigate } from "react-router-dom";
 
+
 export function useMaintenanceColumns(onDelete: (id: string) => void) {
     const navigate = useNavigate();
+
+    const truncate = (text: string, max: number) =>
+        text && text.length > max ? text.slice(0, max) + "…" : text;
 
     const columns: ColumnsType<Maintenance> = [
         {
@@ -55,12 +59,17 @@ export function useMaintenanceColumns(onDelete: (id: string) => void) {
             ],
             onFilter: (value, record) => record.equipment.location === value,
             render: (equipment: any) => (
-                <span>
-                    <b>{equipment.brand}</b> <br />
-                    <span className="text-gray-500">N.º Serie: {equipment.serialNumber}</span>
-                    <br />
-                    <span className="text-gray-400 text-xs">{equipment.location}</span>
-                </span>
+                <div className="max-w-[200px]">
+                    <Tooltip title={equipment.brand}>
+                        <b className="block truncate">{truncate(equipment.brand, 18)}</b>
+                    </Tooltip>
+                    <Tooltip title={equipment.serialNumber}>
+                        <span className="text-gray-500 block truncate text-xs">
+                            N.º Serie: {truncate(equipment.serialNumber, 18)}
+                        </span>
+                    </Tooltip>
+                    <span className="text-gray-400 text-xs block truncate">{equipment.location}</span>
+                </div>
             ),
         },
         {
@@ -115,15 +124,19 @@ export function useMaintenanceColumns(onDelete: (id: string) => void) {
             render: (_: string, record) => (
                 <Space>
                     <Tooltip title="Ver detalles">
-                        <Button icon={<EyeOutlined />} onClick={() => navigate(`/maintenances/${record._id}`)} />
+                        <Button icon={<EyeOutlined />}
+                            className="text-blue-600 dark:text-blue-300 hover:!bg-blue-100 dark:hover:!bg-blue-900"
+                            onClick={() => navigate(`/maintenances/${record._id}`)} />
                     </Tooltip>
                     <Tooltip title="Editar">
-                        <Button icon={<EditOutlined />} onClick={() => navigate(`/maintenance/${record._id}/edit`)} />
+                        <Button icon={<EditOutlined />}
+                            className="text-yellow-600 dark:text-yellow-300 hover:!bg-yellow-100 dark:hover:!bg-yellow-900"
+                            onClick={() => navigate(`/maintenance/${record._id}/edit`)} />
                     </Tooltip>
                     <Tooltip title="Eliminar">
                         <Button
                             icon={<DeleteOutlined />}
-                            danger
+                            className="text-red-600 dark:text-red-400 hover:!bg-red-100 dark:hover:!bg-red-900"
                             onClick={() => onDelete(record._id)}
                         />
                     </Tooltip>
