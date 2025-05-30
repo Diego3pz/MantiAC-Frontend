@@ -1,5 +1,36 @@
 import { z } from "zod";
 
+
+// Auth & User
+const authSchema = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    currentPassword: z.string(),
+    password: z.string(),
+    confirmPassword: z.string(),
+    token: z.string()
+})
+
+type Auth = z.infer<typeof authSchema>
+export type UserLoginForm = Pick<Auth, 'email' | 'password'>
+export type UserRegistrationForm = Pick<Auth, 'name' | 'email' | 'password' | 'confirmPassword'>
+export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
+export type ForgotPasswordForm = Pick<Auth, 'email'>
+export type NewPasswordForm = Pick<Auth, 'password' | 'confirmPassword'>
+export type ConfirmToken = Pick<Auth, 'token'>
+export type UpdateCurrentUserPasswordForm = Pick<Auth, 'currentPassword' | 'password' | 'confirmPassword'>
+
+// User
+export const userSchema = authSchema.pick({
+    name: true,
+    email: true
+}).extend({
+    _id: z.string()
+})
+
+export type User = z.infer<typeof userSchema>
+export type UserProfileForm = Pick<User, 'name' | 'email'>
+
 // Equipment 
 export const EquipmentSchema = z.object({
     _id: z.string(),
@@ -57,8 +88,8 @@ export const MaintenanceArraySchema = z.array(MaintenanceSchema);
 export type MaintenanceArray = z.infer<typeof MaintenanceArraySchema>;
 
 export interface AlertEquipmentData {
-  equipo: string;
-  motivo: string;
-  id: string;
-  equipmentId: string;
+    equipo: string;
+    motivo: string;
+    id: string;
+    equipmentId: string;
 }

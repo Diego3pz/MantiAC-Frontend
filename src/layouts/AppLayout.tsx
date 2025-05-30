@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
-import { Layout} from 'antd'
-import { Outlet } from 'react-router-dom'
+import { Layout } from 'antd'
+import { Navigate, Outlet } from 'react-router-dom'
 import Sidebar from '../components/AppLayout/Sidebar'
 import HeaderBar from '../components/AppLayout/HeaderBar'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useAuth } from '../hooks/useAuth'
 
 const { Content } = Layout
 
 export default function AppLayout() {
+    const { data, isError, isLoading } = useAuth()
     const [collapsed, setCollapsed] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
@@ -22,8 +24,12 @@ export default function AppLayout() {
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-
-    return (
+    if (isLoading) return 'Cargando...'
+    if (isError) {
+        return <Navigate to='/auth/login' />
+    }
+    
+    if (data) return (
         <>
             <Layout className="min-h-screen">
                 <Sidebar
@@ -38,6 +44,7 @@ export default function AppLayout() {
                         isMobile={isMobile}
                         mobileOpen={mobileOpen}
                         setMobileOpen={setMobileOpen}
+                        userName={data.name}
                     />
                     <Content className="p-8 bg-gray-50 dark:bg-gray-950 dark:text-gray-100 h-[calc(100vh-64px)] overflow-y-auto transition-colors">
                         <Outlet />

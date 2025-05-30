@@ -48,7 +48,7 @@ export default function PasswordForm({ loading, onChange, form }: PasswordFormPr
           type="primary"
           htmlType="submit"
           loading={loading}
-          className="w-full !bg-blue-600 !border-blue-600 !text-white font-bold mt-4"
+          className="w-full font-bold mt-4 bg-blue-600 border-gray-300 text-white hover:bg-gray-300 dark:!bg-gray-700 dark:!border-gray-700 dark:hover:!bg-gray-600 dark:!text-white"
         >
           GUARDAR CONTRASEÑA
         </Button>

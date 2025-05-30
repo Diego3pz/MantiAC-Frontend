@@ -42,7 +42,7 @@ export default function AccountView() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-950 flex flex-col items-center py-12 px-2 transition-colors">
+    <div className=" dark:bg-gray-950 flex flex-col items-center py-12 px-2 transition-colors">
       <div className="w-full max-w-4xl">
         <Tabs
           defaultActiveKey="profile"
@@ -60,7 +60,7 @@ export default function AccountView() {
                     Mi Cuenta
                   </Title>
                   <Text type="secondary" className="mb-8 text-xl text-center dark:text-gray-300">
-                    Aquí puedes actualizar tu información
+                    Actualiza tu información personal y preferencias
                   </Text>
                   <ProfileForm
                     user={user}

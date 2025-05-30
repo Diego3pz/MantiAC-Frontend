@@ -1,9 +1,11 @@
-import { Layout, Input, Badge, Avatar, Button, Space, Popover } from 'antd'
-import { MailOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
-import { useQuery } from '@tanstack/react-query'
+import { Layout, Input, Badge, Avatar, Button, Space, Popover, Dropdown, Menu } from 'antd'
+import { MailOutlined, MenuUnfoldOutlined, LogoutOutlined } from '@ant-design/icons'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { GetAllMaintenance } from '../../services/MaintenanceAPI'
 import { useState } from 'react'
 import { NotificationsPopover } from '../organisms/NotificationsPopover'
+import { useNavigate } from 'react-router-dom'
+
 
 const { Header } = Layout
 
@@ -11,17 +13,22 @@ interface HeaderBarProps {
     isMobile: boolean
     mobileOpen: boolean
     setMobileOpen: (value: boolean) => void
+    userName: string // <-- agrega esta línea
 }
 
-const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOpen }) => {
+
+const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOpen, userName }) => {
     const [popoverOpen, setPopoverOpen] = useState(false)
-    
+    const navigate = useNavigate()
+
     // Obtener mantenimientos y filtrar los que tienen alerta
     const { data: mantenimientos } = useQuery({
         queryKey: ['maintenances'],
         queryFn: GetAllMaintenance,
         retry: false
     })
+
+    const userInitial = userName ? userName.charAt(0).toUpperCase() : '?'
     const hoy = new Date()
     const equiposConAlerta = Object.values(
         (mantenimientos ?? [])
@@ -47,6 +54,21 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOp
             }, {} as Record<string, { equipo: string, equipmentId: string, count: number }>)
     );
 
+    const queryClient = useQueryClient()
+    const handleLogout = () => {
+        localStorage.removeItem('AUTH_TOKEN')
+        queryClient.clear()
+        navigate('/auth/login', { replace: true })
+    }
+
+    const userMenu = (
+        <Menu>
+            <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+                Cerrar sesión
+            </Menu.Item>
+        </Menu>
+    )
+
     return (
         <Header className="bg-white dark:bg-gray-900 dark:text-gray-100 px-4 sm:px-6 flex items-center justify-between shadow-sm gap-2 h-16 border-b border-gray-200 dark:border-gray-800 transition-colors">
             {isMobile && !mobileOpen && (
@@ -64,10 +86,16 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOp
                 allowClear
             />
             <div className="flex items-center gap-2 sm:gap-4 ml-2">
-                <Avatar className="bg-orange-100 text-orange-400" size="large">
-                    D
-                </Avatar>
-                <span className="text-gray-600 dark:text-gray-200 hidden sm:inline">Delicious Burger</span>
+                <Dropdown overlay={userMenu} placement="bottomRight" trigger={['click']}>
+                    <div className="flex items-center gap-2 cursor-pointer">
+                        <Avatar className="bg-gray-800  text-blue-400 sm:hidden" size="large">
+                            {userInitial}
+                        </Avatar>
+                        <span
+                            className="text-gray-100 bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm hidden sm:inline transition hover:bg-gray-700 cursor-pointer"
+                        >{userName}</span>
+                    </div>
+                </Dropdown>
                 <Space>
                     <Popover
                         content={

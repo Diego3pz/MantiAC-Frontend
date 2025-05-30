@@ -39,7 +39,7 @@ export default function ProfileForm({ user, loading, onSave, onDelete, form }: P
                     type="primary"
                     htmlType="submit"
                     loading={loading}
-                    className="w-full !bg-blue-800 !border-blue-800 !text-white font-bold mt-4"
+                    className="w-full font-bold mt-4 bg-blue-600 border-gray-300 text-white hover:bg-gray-300 dark:!bg-gray-700 dark:!border-gray-700 dark:hover:!bg-gray-600 dark:!text-white"
                 >
                     Guardar cambios
                 </Button>
@@ -47,7 +47,7 @@ export default function ProfileForm({ user, loading, onSave, onDelete, form }: P
             <Button
                 danger
                 icon={<DeleteOutlined />}
-                className="w-full mt-6 !bg-red-600 dark:!bg-red-800 text-white "
+                className="w-full mt-6 !bg-red-800 !border-red-800 hover:!bg-red-700 !text-white"
                 onClick={onDelete}
             >
                 Eliminar cuenta

@@ -1,6 +1,8 @@
 import { GithubOutlined, LinkedinOutlined, FolderOpenOutlined } from "@ant-design/icons";
-import { Tooltip } from "antd";
+import { Tooltip, Typography } from "antd";
 import { useState } from "react";
+
+const { Title } = Typography;
 
 export default function InformationView() {
   const [copied, setCopied] = useState(false);
@@ -12,8 +14,10 @@ export default function InformationView() {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-16 p-6 rounded-lg bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow text-center">
-      <h2 className="text-2xl font-bold mb-2">Contáctame</h2>
+    <div className="max-w-lg mx-auto mt-16 p-6 rounded-lg bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow text-center  text-lg">
+      <Title level={1} className="!mb-0 !mt-8 !font-black text-center dark:text-white">
+        Contáctame
+      </Title>
       <p className="mb-6 text-gray-700 dark:text-blue-100">
         Si eres reclutador, empleador o estás interesado en discutir oportunidades profesionales, ¡me encantaría saber de ti!
         Estoy abierto a explorar roles en empresas o startups donde pueda contribuir y crecer.

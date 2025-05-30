@@ -10,13 +10,14 @@ import { useState } from "react";
 import { ProgressBar } from "@tremor/react";
 import { ModalAlertas } from "../components/AppLayout/Dashboard/ModalAlertas";
 import { BannerAlerta } from "../components/AppLayout/Dashboard/BannerAlerta";
+import { useAuth } from "../hooks/useAuth";
 
 
 export default function DashboardView() {
 
   const [showAlertModal, setShowAlertModal] = useState(false);
+  const { data: user, isLoading: authLoading } = useAuth()
   const { data: equipos, isLoading: loadingEquipos } = useQuery({
-
     queryKey: ['equipments'],
     queryFn: getAllEquipments,
     retry: false
@@ -86,9 +87,9 @@ export default function DashboardView() {
     ? Math.round(((totalMantenimientos - mantenimientosPendientes) / totalMantenimientos) * 100)
     : 100;
 
-  if (loadingEquipos || loadingMantenimientos) return <div>Cargando...</div>;
-
-  return (
+  if (loadingEquipos || loadingMantenimientos || authLoading) return <div>Cargando...</div>;
+  
+  if (user && equipos && mantenimientos) return (
     <>
       <ModalAlertas
         open={showAlertModal}
@@ -130,8 +131,6 @@ export default function DashboardView() {
           />
         </div>
       </div>
-
-
     </>
   );
 }
