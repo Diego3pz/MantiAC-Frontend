@@ -9,12 +9,13 @@ import {
     ClockCircleOutlined,
     FileTextOutlined
 } from "@ant-design/icons";
+import { useAuth } from "../../../hooks/useAuth";
 
 const { Panel } = Collapse;
 
 
 export function MaintenanceInfo({ maintenance }: { maintenance: any }) {
-
+    const { data: user } = useAuth();
     const getTypeColor = (type: string) => {
         if (type === 'Preventivo Completo') return 'green';
         if (type === 'Correctivo') return 'red';
@@ -60,7 +61,7 @@ export function MaintenanceInfo({ maintenance }: { maintenance: any }) {
                         <div className="font-semibold text-sm md:text-base">Técnico</div>
                     </div>
                     <div className="break-words text-sm md:text-base max-w-full text-center md:text-left" style={{ wordBreak: "break-word" }}>
-                        {maintenance.performedBy}
+                        {user?.name || <span className="text-gray-400">No disponible</span>}
                     </div>
                 </div>
                 <div className="flex flex-col items-center md:items-start gap-1">

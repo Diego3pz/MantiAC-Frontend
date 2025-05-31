@@ -25,7 +25,6 @@ export default function EditMaintenanceForm({ data }: EditMaintenanceFormProps) 
         date: formatDate(data.date),
         description: data.description,
         cost: data.cost ? String(data.cost) : "",
-        performedBy: data.performedBy,
         supervisedBy: data.supervisedBy,
         completed: data.completed,
     };

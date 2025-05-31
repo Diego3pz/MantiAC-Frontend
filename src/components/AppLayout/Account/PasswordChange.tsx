@@ -1,15 +1,26 @@
+import { useMutation } from "@tanstack/react-query";
 import { Form, Input, Button } from "antd";
-
+import type { UpdateCurrentUserPasswordForm } from "../../../types";
+import { changePassword } from "../../../services/ProfileAPI";
+import { toast } from "react-toastify";
 interface PasswordFormProps {
   loading: boolean;
-  onChange: (values: any) => void;
   form: any;
 }
 
-export default function PasswordForm({ loading, onChange, form }: PasswordFormProps) {
+export default function PasswordForm({ loading, form }: PasswordFormProps) {
+
+  const { mutate } = useMutation({
+    mutationFn: changePassword,
+    onError: (error) => toast.error(error.message),
+    onSuccess: (data) => toast.success(data)
+  })
+
+  const handleChangePassword = (formData: UpdateCurrentUserPasswordForm) => mutate(formData)
+
   return (
     <div className="bg-white dark:bg-gray-900 rounded shadow p-8 w-full max-w-2xl">
-      <Form layout="vertical" form={form} onFinish={onChange}>
+      <Form layout="vertical" form={form} onFinish={handleChangePassword}>
         <Form.Item
           label="Contraseña actual"
           name="currentPassword"
@@ -19,7 +30,7 @@ export default function PasswordForm({ loading, onChange, form }: PasswordFormPr
         </Form.Item>
         <Form.Item
           label="Nueva contraseña"
-          name="newPassword"
+          name="password"
           rules={[{ required: true, message: "Ingresa la nueva contraseña" }]}
         >
           <Input.Password />
@@ -27,12 +38,12 @@ export default function PasswordForm({ loading, onChange, form }: PasswordFormPr
         <Form.Item
           label="Confirmar nueva contraseña"
           name="confirmPassword"
-          dependencies={["newPassword"]}
+          dependencies={["password"]}
           rules={[
             { required: true, message: "Confirma la nueva contraseña" },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                if (!value || getFieldValue("newPassword") === value) {
+                if (!value || getFieldValue("password") === value) {
                   return Promise.resolve();
                 }
                 return Promise.reject(
@@ -50,7 +61,7 @@ export default function PasswordForm({ loading, onChange, form }: PasswordFormPr
           loading={loading}
           className="w-full font-bold mt-4 bg-blue-600 border-gray-300 text-white hover:bg-gray-300 dark:!bg-gray-700 dark:!border-gray-700 dark:hover:!bg-gray-600 dark:!text-white"
         >
-          GUARDAR CONTRASEÑA
+          Guardar contraseña
         </Button>
       </Form>
     </div>

@@ -2,6 +2,7 @@ import { type Control, type FieldErrors, type UseFormRegister } from "react-hook
 import { useWatch } from "react-hook-form";
 import ErrorMessage from "../../ErrorMessage";
 import { MaintenanceTypeSchema, type MaintenanceFormData, type MaintenanceType } from "../../../types";
+import { useAuth } from "../../../hooks/useAuth";
 
 // Puedes importar los tipos de mantenimiento desde un archivo de constantes compartido si lo tienes
 const maintenanceTypes: MaintenanceType[] = MaintenanceTypeSchema.options;
@@ -14,7 +15,7 @@ type MaintenanceFormProps = {
 
 export default function MaintenanceForm({ register, errors, control }: MaintenanceFormProps) {
     const type = useWatch({ control, name: "type" });
-
+    const { data: user } = useAuth();
     return (
         <>
             <label className="block font-semibold text-slate-700 dark:text-gray-100" htmlFor="type">
@@ -45,7 +46,7 @@ export default function MaintenanceForm({ register, errors, control }: Maintenan
 
             {type === "Correctivo" && (
                 <>
-                  
+
                     <label className="block font-semibold text-slate-700 dark:text-gray-100" htmlFor="description">
                         Descripción
                     </label>
@@ -80,14 +81,9 @@ export default function MaintenanceForm({ register, errors, control }: Maintenan
             <label className="block font-semibold text-slate-700 dark:text-gray-100" htmlFor="performedBy">
                 Técnico responsable
             </label>
-            <input
-                id="performedBy"
-                type="text"
-                {...register("performedBy", { required: "El técnico responsable es obligatorio" })}
-                className="w-full border border-blue-200 dark:border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 dark:bg-gray-800 dark:text-gray-100 transition"
-                placeholder="ID del técnico o nombre"
-            />
-            {errors.performedBy && <ErrorMessage>{errors.performedBy.message}</ErrorMessage>}
+            <p className="w-full border border-blue-200 dark:border-gray-700 rounded-lg px-3 py-2 text-gray-400 bg-blue-50 dark:bg-gray-800 dark:text-gray-500 transition">
+                {user?.name ?? "Usuario actual"}
+            </p>
 
             <label className="block font-semibold text-slate-700 dark:text-gray-100" htmlFor="supervisedBy">
                 Supervisor

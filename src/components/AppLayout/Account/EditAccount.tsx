@@ -1,27 +1,50 @@
 import { Form, Input, Button } from "antd";
 import { UserOutlined, MailOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateProfile } from "../../../services/ProfileAPI";
+import { toast } from "react-toastify";
+import type { UserProfileForm } from "../../../types";
 
 interface ProfileFormProps {
-    user: { name: string; email: string };
+    user: { name: string; lastName: string; email: string };
     loading: boolean;
-    onSave: (values: any) => void;
     onDelete: () => void;
     form: any;
 }
 
-export default function ProfileForm({ user, loading, onSave, onDelete, form }: ProfileFormProps) {
+export default function ProfileForm({ user, loading, onDelete, form }: ProfileFormProps) {
+
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation({
+        mutationFn: updateProfile,
+        onError: (error) => toast.error(error.message),
+        onSuccess: (data) => {
+            toast.success(data)
+            queryClient.invalidateQueries({ queryKey: ['user'] })
+        }
+    })
+
+     const handleEditProfile = (formData: UserProfileForm) => mutate(formData)
+
     return (
         <div className="bg-white dark:bg-gray-900 rounded shadow p-8 w-full max-w-2xl">
             <Form
                 layout="vertical"
                 form={form}
                 initialValues={user}
-                onFinish={onSave}
+                onFinish={handleEditProfile}
             >
                 <Form.Item
                     label="Nombre"
                     name="name"
                     rules={[{ required: true, message: "El nombre es obligatorio" }]}
+                >
+                    <Input prefix={<UserOutlined />} />
+                </Form.Item>
+                <Form.Item
+                    label="Apellido"
+                    name="lastName"
+                    rules={[{ required: true, message: "El apellido es obligatorio" }]}
                 >
                     <Input prefix={<UserOutlined />} />
                 </Form.Item>

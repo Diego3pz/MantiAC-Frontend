@@ -47,11 +47,6 @@ export function useEquipmentDetailsColumns({ handleView, handleEdit, handleDelet
                 completed ? <Tag color="green">Completado</Tag> : <Tag color="orange">Pendiente</Tag>,
         },
         {
-            title: "Técnico",
-            dataIndex: "performedBy",
-            key: "performedBy",
-        },
-        {
             title: "Supervisor",
             dataIndex: "supervisedBy",
             key: "supervisedBy",

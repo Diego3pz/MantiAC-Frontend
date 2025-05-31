@@ -4,6 +4,7 @@ import { z } from "zod";
 // Auth & User
 const authSchema = z.object({
     name: z.string(),
+    lastName: z.string(),
     email: z.string().email(),
     currentPassword: z.string(),
     password: z.string(),
@@ -13,7 +14,7 @@ const authSchema = z.object({
 
 type Auth = z.infer<typeof authSchema>
 export type UserLoginForm = Pick<Auth, 'email' | 'password'>
-export type UserRegistrationForm = Pick<Auth, 'name' | 'email' | 'password' | 'confirmPassword'>
+export type UserRegistrationForm = Pick<Auth, 'name' | 'lastName' | 'email' | 'password' | 'confirmPassword'>
 export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'confirmPassword'>
@@ -23,13 +24,15 @@ export type UpdateCurrentUserPasswordForm = Pick<Auth, 'currentPassword' | 'pass
 // User
 export const userSchema = authSchema.pick({
     name: true,
+    lastName: true,
     email: true
 }).extend({
-    _id: z.string()
+    _id: z.string(),
+    notificationsEnabled: z.boolean()
 })
 
 export type User = z.infer<typeof userSchema>
-export type UserProfileForm = Pick<User, 'name' | 'email'>
+export type UserProfileForm = Pick<User, 'name' | 'lastName' | 'email'>
 
 // Equipment 
 export const EquipmentSchema = z.object({
@@ -73,13 +76,12 @@ export const MaintenanceFormSchema = MaintenanceSchema.pick({
     date: true,
     description: true,
     cost: true,
-    performedBy: true,
     supervisedBy: true,
     completed: true
 })
 
 export type Maintenance = z.infer<typeof MaintenanceSchema>
-export type MaintenanceFormData = Omit<Pick<Maintenance, "type" | "date" | "performedBy" | "supervisedBy" | "completed">, "type"> & {
+export type MaintenanceFormData = Omit<Pick<Maintenance, "type" | "date" | "supervisedBy" | "completed">, "type"> & {
     type: MaintenanceTypeForm;
     description?: string;
     cost?: string;

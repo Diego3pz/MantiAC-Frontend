@@ -14,6 +14,8 @@ export default function AppLayout() {
     const [collapsed, setCollapsed] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
+    const userName = data ? `${data.name} ${data.lastName}` : ''
+
 
     // Detectar tamaño de pantalla
     useEffect(() => {
@@ -28,7 +30,7 @@ export default function AppLayout() {
     if (isError) {
         return <Navigate to='/auth/login' />
     }
-    
+
     if (data) return (
         <>
             <Layout className="min-h-screen">
@@ -44,7 +46,8 @@ export default function AppLayout() {
                         isMobile={isMobile}
                         mobileOpen={mobileOpen}
                         setMobileOpen={setMobileOpen}
-                        userName={data.name}
+                        userName={userName}
+
                     />
                     <Content className="p-8 bg-gray-50 dark:bg-gray-950 dark:text-gray-100 h-[calc(100vh-64px)] overflow-y-auto transition-colors">
                         <Outlet />

@@ -101,11 +101,6 @@ export function useMaintenanceColumns(onDelete: (id: string) => void) {
                 completed ? <Tag color="green">Completado</Tag> : <Tag color="orange">Pendiente</Tag>,
         },
         {
-            title: 'Técnico',
-            dataIndex: 'performedBy',
-            key: 'performedBy',
-        },
-        {
             title: "Costo",
             dataIndex: "cost",
             key: "cost",

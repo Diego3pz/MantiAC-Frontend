@@ -2,7 +2,6 @@ import {
     BarcodeOutlined,
     TagOutlined,
     EnvironmentOutlined,
-    IdcardOutlined
 } from "@ant-design/icons";
 
 export function EquipmentInfo({ equipment }: { equipment: any }) {
@@ -42,17 +41,6 @@ export function EquipmentInfo({ equipment }: { equipment: any }) {
                         {equipment.location}
                     </div>
                 </div>
-                {equipment._id && (
-                    <div className="flex flex-col items-center md:items-start gap-1 md:col-span-2">
-                        <div className="flex items-center gap-2 justify-center md:justify-start w-full">
-                            <IdcardOutlined />
-                            <div className="font-semibold text-sm md:text-base">ID</div>
-                        </div>
-                        <div className="break-words text-xs md:text-base max-w-full text-center md:text-left" style={{ wordBreak: "break-word" }}>
-                            {equipment._id}
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );

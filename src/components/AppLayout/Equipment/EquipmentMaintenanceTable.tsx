@@ -147,9 +147,6 @@ export function EquipmentMaintenanceTable({ equipmentId }: EquipmentMaintenanceT
                                         <b>Fecha:</b> {formatDate(m.date)}
                                     </div>
                                     <div className="mb-1">
-                                        <b>Técnico:</b> {m.performedBy}
-                                    </div>
-                                    <div className="mb-1">
                                         <b>Supervisor:</b> {m.supervisedBy}
                                     </div>
                                     <div className="mb-2">

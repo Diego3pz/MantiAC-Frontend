@@ -103,10 +103,21 @@ export async function getUserProfile() {
         const response = userSchema.safeParse(data)
         if (response.success) {
             return response.data
-        } else{
+        } else {
             console.error('Error de validación:', response.error);
             throw new Error('Los datos del usuario no son válidos');
         }
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
+}
+
+export async function updateNotifications(notificationsEnabled: boolean) {
+    try {
+        const { data } = await api.put('/auth/notifications', { notificationsEnabled });
+        return data;
     } catch (error) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);

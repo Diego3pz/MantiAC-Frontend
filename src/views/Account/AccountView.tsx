@@ -3,38 +3,22 @@ import { Tabs, Modal, Typography, Form } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import ProfileForm from "../../components/AppLayout/Account/EditAccount";
 import PasswordForm from "../../components/AppLayout/Account/PasswordChange";
+import { useAuth } from "../../hooks/useAuth";
 
 const { Title, Text } = Typography;
 
 export default function AccountView() {
 
-  // Ejemlo de usuario
-  const [user, setUser] = useState({
-    name: "User Test",
-    email: "correo@correo.com",
-  });
+  const { data } = useAuth();
+  const user = {
+    name: data?.name || "",
+    lastName: data?.lastName || "",
+    email: data?.email || ""
+  };
   const [form] = Form.useForm();
   const [passwordForm] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
-  // Guardar cambios de perfil
-  const handleSave = (values: any) => {
-    setLoading(true);
-    setTimeout(() => {
-      setUser({ ...user, ...values });
-      setLoading(false);
-    }, 1000);
-  };
-
-  // Cambiar contraseña
-  const handlePasswordChange = (values: any) => {
-    setLoading(true);
-    setTimeout(() => {
-      passwordForm.resetFields();
-      setLoading(false);
-    }, 1000);
-  };
 
   // Eliminar cuenta
   const handleDelete = () => {
@@ -65,7 +49,6 @@ export default function AccountView() {
                   <ProfileForm
                     user={user}
                     loading={loading}
-                    onSave={handleSave}
                     onDelete={() => setModalOpen(true)}
                     form={form}
                   />
@@ -76,7 +59,7 @@ export default function AccountView() {
               key: "password",
               label: (
                 <span>
-                  <LockOutlined/> Cambiar Password
+                  <LockOutlined /> Cambiar Password
                 </span>
               ),
               children: (
@@ -89,7 +72,6 @@ export default function AccountView() {
                   </Text>
                   <PasswordForm
                     loading={loading}
-                    onChange={handlePasswordChange}
                     form={passwordForm}
                   />
                 </div>

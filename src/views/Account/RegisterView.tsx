@@ -11,6 +11,7 @@ export default function RegisterView() {
 
   const initialValues: UserRegistrationForm = {
     name: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -88,6 +89,23 @@ export default function RegisterView() {
           />
           {errors.name && (
             <ErrorMessage>{errors.name.message}</ErrorMessage>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <label
+            className="font-normal text-2xl"
+          >Apellido</label>
+          <input
+            type="text"
+            placeholder="Apellido de Registro"
+            className="w-full p-3  border-gray-300 border"
+            {...register("lastName", {
+              required: "El Apellido es obligatorio",
+            })}
+          />
+          {errors.lastName && (
+            <ErrorMessage>{errors.lastName.message}</ErrorMessage>
           )}
         </div>
 

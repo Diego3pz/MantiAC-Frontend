@@ -1,4 +1,4 @@
-import logoBg from '../../public/logoIcon.png'
+import logoBg from '../../src/assets/logoIcon.png'
 
 export default function LogoBg() {
   return (

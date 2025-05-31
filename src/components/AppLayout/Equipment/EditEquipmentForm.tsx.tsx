@@ -33,7 +33,7 @@ export default function EditEquipmentForm({ data }: EditEquipmentFormProps) {
             queryClient.invalidateQueries({ queryKey: ['equipment', equipmentId] })
             queryClient.invalidateQueries({ queryKey: ['editEquipments', equipmentId] })
             toast.success(data)
-            navigate(`/equipments/${equipmentId}`)
+            navigate(-1)
         },
         onError: (error) => {
             toast.error(error.message)
@@ -58,8 +58,8 @@ export default function EditEquipmentForm({ data }: EditEquipmentFormProps) {
                         <p className="text-gray-500 text-center max-w-md">
                             Completa el siguiente formulario para editar un equipo de tu sistema. Todos los campos son obligatorios.
                         </p>
-                        <button className="mt-4 bg-blue-400 w-64 p-3 text-white uppercase font-bold rounded hover:bg-blue-500 transition-colors cursor-pointer" onClick={() => navigate(`/equipments/${equipmentId}`)}>
-                            Volver a equipo
+                        <button className="mt-4 bg-blue-400 w-64 p-3 text-white uppercase font-bold rounded hover:bg-blue-500 transition-colors cursor-pointer" onClick={() => navigate(-1)}>
+                            Volver
                         </button>
                     </div>
 

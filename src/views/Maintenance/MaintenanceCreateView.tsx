@@ -19,7 +19,6 @@ export default function MaintenanceCreateView() {
     date: "",
     description: "",
     cost: "",
-    performedBy: "",
     supervisedBy: "",
     completed: false
   }

@@ -13,7 +13,7 @@ interface HeaderBarProps {
     isMobile: boolean
     mobileOpen: boolean
     setMobileOpen: (value: boolean) => void
-    userName: string // <-- agrega esta línea
+    userName: string
 }
 
 
@@ -92,7 +92,7 @@ const HeaderBar: React.FC<HeaderBarProps> = ({ isMobile, mobileOpen, setMobileOp
                             {userInitial}
                         </Avatar>
                         <span
-                            className="text-gray-100 bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm hidden sm:inline transition hover:bg-gray-700 cursor-pointer"
+                            className=" bg-gray-100 text-black dark:text-gray-100 dark:bg-gray-800 border dark:border-gray-600 rounded px-2 py-1 text-sm hidden sm:inline transition hover:bg-gray-300 dark:hover:bg-gray-700 cursor-pointer"
                         >{userName}</span>
                     </div>
                 </Dropdown>
