@@ -4,15 +4,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "../../../services/ProfileAPI";
 import { toast } from "react-toastify";
 import type { UserProfileForm } from "../../../types";
+import LoadingSpinner from "../../atoms/LoadingSpinner";
 
 interface ProfileFormProps {
     user: { name: string; lastName: string; email: string };
     loading: boolean;
+    setLoading: (loading: boolean) => void;
     onDelete: () => void;
     form: any;
 }
 
-export default function ProfileForm({ user, loading, onDelete, form }: ProfileFormProps) {
+export default function ProfileForm({ user, loading, setLoading, onDelete, form }: ProfileFormProps) {
 
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
@@ -24,7 +26,14 @@ export default function ProfileForm({ user, loading, onDelete, form }: ProfileFo
         }
     })
 
-     const handleEditProfile = (formData: UserProfileForm) => mutate(formData)
+    const handleEditProfile = (formData: UserProfileForm) => {
+        setLoading(true);
+        mutate(formData, {
+            onSettled: () => setLoading(false)
+        });
+    };
+
+    if (loading) return <LoadingSpinner tip="Guardando cambios..." />;
 
     return (
         <div className="bg-white dark:bg-gray-900 rounded shadow p-8 w-full max-w-2xl">

@@ -11,6 +11,8 @@ import { ProgressBar } from "@tremor/react";
 import { ModalAlertas } from "../components/AppLayout/Dashboard/ModalAlertas";
 import { BannerAlerta } from "../components/AppLayout/Dashboard/BannerAlerta";
 import { useAuth } from "../hooks/useAuth";
+import { motion } from "framer-motion";
+import PageWrapper from "../components/atoms/PageWrapper";
 
 
 export default function DashboardView() {
@@ -88,49 +90,73 @@ export default function DashboardView() {
     : 100;
 
   if (loadingEquipos || loadingMantenimientos || authLoading) return <div>Cargando...</div>;
-  
-  if (user && equipos && mantenimientos) return (
-    <>
-      <ModalAlertas
-        open={showAlertModal}
-        onClose={() => setShowAlertModal(false)}
-        equiposConAlerta={equiposConAlerta}
-        onMarkCompleted={(maintenanceId, equipmentId) =>
-          marcarRealizado({ maintenanceId, equipmentId })
-        }
-      />
-      <BannerAlerta
-        equiposConAlerta={equiposConAlerta}
-        onVerDetalles={() => setShowAlertModal(true)}
-      />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <CardComponent title="Total de Equipos" value={totalEquipos.toString()} />
-        <CardComponent title="Mantenimientos este mes" value={mantenimientosMes.toString()} />
-        <CardComponent title="Próximos mantenimientos" value={proximosMantenimientos.length.toString()} />
-      </div>
-      <div className="mt-6">
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border flex flex-col gap-2 dark:border-gray-800 transition-colors">
-          <span className="font-semibold mb-2">Porcentaje de equipos al día</span>
-          <ProgressBar value={porcentajeAlDia} color={porcentajeAlDia === 100 ? "green" : "yellow"} />
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            {porcentajeAlDia}% de los mantenimientos están al día ({mantenimientosPendientes} pendiente(s))
-          </span>
-        </div>
-      </div>
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <ChartComponent data={mantenimientosPorTipo} />
-        <div className="">
-          <TableList
-            data={proximosMantenimientos.map(m => ({
-              ...m,
-              equipo: typeof m.equipment === "string" ? m.equipment : m.equipment?.brand ?? "Desconocido",
-              fecha: formatDate(m.date),
-              tipo: m.type
-            }))}
-          />
+  if (user && equipos && mantenimientos) return (
+    <PageWrapper>
+      <>
+        <ModalAlertas
+          open={showAlertModal}
+          onClose={() => setShowAlertModal(false)}
+          equiposConAlerta={equiposConAlerta}
+          onMarkCompleted={(maintenanceId, equipmentId) =>
+            marcarRealizado({ maintenanceId, equipmentId })
+          }
+        />
+        <BannerAlerta
+          equiposConAlerta={equiposConAlerta}
+          onVerDetalles={() => setShowAlertModal(true)}
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+          <CardComponent title="Total de Equipos" value={totalEquipos.toString()} />
+          <CardComponent title="Mantenimientos este mes" value={mantenimientosMes.toString()} />
+          <CardComponent title="Próximos mantenimientos" value={proximosMantenimientos.length.toString()} />
+        </motion.div>
+
+        <div className="mt-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
+            className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border flex flex-col gap-2 dark:border-gray-800 transition-colors"
+          >
+            <span className="font-semibold mb-2">Porcentaje de equipos al día</span>
+            <ProgressBar value={porcentajeAlDia} color={porcentajeAlDia === 100 ? "green" : "yellow"} />
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              {porcentajeAlDia}% de los mantenimientos están al día ({mantenimientosPendientes} pendiente(s))
+            </span>
+          </motion.div>
         </div>
-      </div>
-    </>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+          >
+            <ChartComponent data={mantenimientosPorTipo} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.4 }}
+          >
+            <TableList
+              data={proximosMantenimientos.map(m => ({
+                ...m,
+                equipo: typeof m.equipment === "string" ? m.equipment : m.equipment?.brand ?? "Desconocido",
+                fecha: formatDate(m.date),
+                tipo: m.type
+              }))}
+            />
+          </motion.div>
+        </div>
+      </>
+    </PageWrapper>
   );
 }

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMaintenanceColumns } from '../../components/AppLayout/Maintenance/MaintenanceColums';
 import { getAllEquipments } from '../../services/EquipmentAPI';
+import { motion } from "framer-motion";
 
 export default function MaintenanceView() {
 
@@ -69,8 +70,20 @@ export default function MaintenanceView() {
   if (isLoading) return 'Cargando...'
   if (data) {
     return (
-      <div className="mx-auto mt-8 px-2">
-        <h2 className="text-2xl font-bold mb-4">Mantenimientos registrados</h2>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="mx-auto mt-8 px-2"
+      >
+        <motion.h2
+          className="text-2xl font-bold mb-4"
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+        >
+          Mantenimientos registrados
+        </motion.h2>
         <div className=' mb-4'>
           <SearchBar
             value={search}
@@ -125,7 +138,7 @@ export default function MaintenanceView() {
             ),
           }}
         />
-      </div>
+      </motion.div>
     );
   }
 }

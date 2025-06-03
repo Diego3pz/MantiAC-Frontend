@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import type { UserLoginForm } from "../../types";
 import { authenticateUser } from "../../services/AuthAPI";
+import { motion } from "framer-motion";
 
 export default function LoginView() {
 
@@ -35,16 +36,23 @@ export default function LoginView() {
 
     return (
         <>
-            <h1 className="text-2xl font-light text-white">
+            <motion.h1
+                className="text-2xl font-light text-white"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+            >
                 Inicia sesión en tu cuenta y {''}
                 <span className=" text-sky-500 font-bold"> gestiona tus equipos</span>
-            </h1>
+            </motion.h1>
 
-
-            <form
+            <motion.form
                 onSubmit={handleSubmit(handleLogin)}
                 className="space-y-8 p-10 bg-white mt-5"
                 noValidate
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
             >
                 <div className="flex flex-col gap-5">
                     <label
@@ -92,9 +100,14 @@ export default function LoginView() {
                     value='Iniciar Sesión'
                     className="bg-sky-600 hover:bg-gray-700 w-full p-3  text-white font-black  text-xl cursor-pointer transic"
                 />
-            </form>
+            </motion.form>
 
-            <nav className=" mt-10 flex flex-col space-y-4">
+            <motion.nav
+                className=" mt-10 flex flex-col space-y-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+            >
                 <Link to={'/auth/register'} className="text-center text-gray-500">
                     <p className="text-center ">¿No tienes una cuenta?
                         {" "}
@@ -108,7 +121,7 @@ export default function LoginView() {
                         <span className="text-sky-600 font-black">Reestablecer</span>
                     </p>
                 </Link>
-            </nav>
+            </motion.nav>
         </>
     )
 }

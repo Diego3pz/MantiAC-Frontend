@@ -1,6 +1,6 @@
 import api from "../lib/axios";
 import { isAxiosError } from "axios";
-import { userSchema, type ConfirmToken, type ForgotPasswordForm, type NewPasswordForm, type RequestConfirmationCodeForm, type UserLoginForm, type UserRegistrationForm } from "../types";
+import { userSchema, type ConfirmToken, type DeleteAccountForm, type ForgotPasswordForm, type NewPasswordForm, type RequestConfirmationCodeForm, type UserLoginForm, type UserRegistrationForm } from "../types";
 
 
 
@@ -122,5 +122,17 @@ export async function updateNotifications(notificationsEnabled: boolean) {
         if (isAxiosError(error) && error.response) {
             throw new Error(error.response.data.error);
         }
+    }
+}
+
+export async function deleteAccount(formData: DeleteAccountForm) {
+    try {
+        const { data } = await api.post<string>('/auth/delete-account', formData);
+        return data;
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+        throw error;
     }
 }

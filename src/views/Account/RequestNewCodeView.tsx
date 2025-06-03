@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import type { RequestConfirmationCodeForm } from "../../types";
 import { requestConfirmationCode } from "../../services/AuthAPI";
+import { motion } from "framer-motion";
 
 
 export default function RegisterView() {
@@ -31,16 +32,23 @@ export default function RegisterView() {
 
     return (
         <>
-
-            <p className="text-2xl font-light text-white mt-5">
+            <motion.p
+                className="text-2xl font-light text-white mt-5"
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+            >
                 Coloca tu e-mail para recibir {''}
                 <span className=" text-fuchsia-500 font-bold"> un nuevo código</span>
-            </p>
+            </motion.p>
 
-            <form
+            <motion.form
                 onSubmit={handleSubmit(handleRequestCode)}
                 className="space-y-8 p-10 rounded-lg bg-white mt-10"
                 noValidate
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
             >
                 <div className="flex flex-col gap-5">
                     <label
@@ -70,9 +78,14 @@ export default function RegisterView() {
                     value='Enviar Código'
                     className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
                 />
-            </form>
+            </motion.form>
 
-            <nav className="mt-10 flex flex-col space-y-4">
+            <motion.nav
+                className="mt-10 flex flex-col space-y-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+            >
                 <Link
                     to='/auth/login'
                     className="text-center text-gray-300 font-normal"
@@ -85,7 +98,7 @@ export default function RegisterView() {
                 >
                     ¿Olvidaste tu contraseña? Reestablecer
                 </Link>
-            </nav>
+            </motion.nav>
         </>
     )
 }

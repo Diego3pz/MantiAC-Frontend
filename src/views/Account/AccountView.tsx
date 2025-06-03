@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { Tabs, Modal, Typography, Form } from "antd";
+import { Tabs, Modal, Typography, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import ProfileForm from "../../components/AppLayout/Account/EditAccount";
 import PasswordForm from "../../components/AppLayout/Account/PasswordChange";
 import { useAuth } from "../../hooks/useAuth";
+import { deleteAccount } from "../../services/AuthAPI";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 const { Title, Text } = Typography;
 
 export default function AccountView() {
-
   const { data } = useAuth();
   const user = {
     name: data?.name || "",
@@ -19,14 +22,35 @@ export default function AccountView() {
   const [passwordForm] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
 
-  // Eliminar cuenta
-  const handleDelete = () => {
+  const deleteAccountMutation = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: (data) => {
+      toast.success(data);
+      localStorage.removeItem("AUTH_TOKEN");
+      window.location.href = "/auth/login";
+    },
+    onError: (error) => {
+      toast.error(error.message);
+      setDeletePassword("");
+    },
+  });
+
+  // Eliminar cuenta usando la mutación
+  const handleDelete = async () => {
+    deleteAccountMutation.mutate({ currentPassword: deletePassword });
+    setDeletePassword("");
     setModalOpen(false);
   };
 
   return (
-    <div className=" dark:bg-gray-950 flex flex-col items-center py-12 px-2 transition-colors">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className=" dark:bg-gray-950 flex flex-col items-center py-12 px-2 transition-colors"
+    >
       <div className="w-full max-w-4xl">
         <Tabs
           defaultActiveKey="profile"
@@ -39,7 +63,12 @@ export default function AccountView() {
                 </span>
               ),
               children: (
-                <div className="flex flex-col items-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="flex flex-col items-center"
+                >
                   <Title level={1} className="!mb-0 !mt-8 !font-black text-center dark:text-white">
                     Mi Cuenta
                   </Title>
@@ -49,10 +78,11 @@ export default function AccountView() {
                   <ProfileForm
                     user={user}
                     loading={loading}
+                    setLoading={setLoading}
                     onDelete={() => setModalOpen(true)}
                     form={form}
                   />
-                </div>
+                </motion.div>
               ),
             },
             {
@@ -63,7 +93,12 @@ export default function AccountView() {
                 </span>
               ),
               children: (
-                <div className="flex flex-col items-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="flex flex-col items-center"
+                >
                   <Title level={2} className="!mb-0 !mt-8 !font-black text-center dark:text-white">
                     Cambiar contraseña
                   </Title>
@@ -72,9 +107,10 @@ export default function AccountView() {
                   </Text>
                   <PasswordForm
                     loading={loading}
+                    setLoading={setLoading}
                     form={passwordForm}
                   />
-                </div>
+                </motion.div>
               ),
             },
           ]}
@@ -87,10 +123,19 @@ export default function AccountView() {
         okType="danger"
         cancelText="Cancelar"
         onOk={handleDelete}
-        onCancel={() => setModalOpen(false)}
+        onCancel={() => {
+          setModalOpen(false);
+          setDeletePassword("");
+        }}
+        confirmLoading={loading}
       >
         <p>¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+        <Input.Password
+          placeholder="Contraseña actual"
+          value={deletePassword}
+          onChange={e => setDeletePassword(e.target.value)}
+        />
       </Modal>
-    </div>
+    </motion.div>
   );
 }

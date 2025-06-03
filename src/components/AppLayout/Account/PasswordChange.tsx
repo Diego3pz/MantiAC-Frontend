@@ -3,12 +3,14 @@ import { Form, Input, Button } from "antd";
 import type { UpdateCurrentUserPasswordForm } from "../../../types";
 import { changePassword } from "../../../services/ProfileAPI";
 import { toast } from "react-toastify";
+import LoadingSpinner from "../../atoms/LoadingSpinner";
 interface PasswordFormProps {
   loading: boolean;
+  setLoading: (loading: boolean) => void;
   form: any;
 }
 
-export default function PasswordForm({ loading, form }: PasswordFormProps) {
+export default function PasswordForm({ loading, setLoading, form }: PasswordFormProps) {
 
   const { mutate } = useMutation({
     mutationFn: changePassword,
@@ -16,7 +18,14 @@ export default function PasswordForm({ loading, form }: PasswordFormProps) {
     onSuccess: (data) => toast.success(data)
   })
 
-  const handleChangePassword = (formData: UpdateCurrentUserPasswordForm) => mutate(formData)
+  const handleChangePassword = (formData: UpdateCurrentUserPasswordForm) => {
+    setLoading(true);
+    mutate(formData, {
+      onSettled: () => setLoading(false)
+    });
+  };
+
+  if (loading) return <LoadingSpinner tip="Guardando cambios..." />;
 
   return (
     <div className="bg-white dark:bg-gray-900 rounded shadow p-8 w-full max-w-2xl">

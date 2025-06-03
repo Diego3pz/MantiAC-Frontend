@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import type { UserRegistrationForm } from "../../types";
 import { CreateAccount } from "../../services/AuthAPI";
+import { motion } from "framer-motion";
 
 
 export default function RegisterView() {
@@ -41,16 +42,23 @@ export default function RegisterView() {
 
   return (
     <>
-
-      <p className="text-2xl font-light text-white mt-5">
+      <motion.p
+        className="text-2xl font-light text-white mt-5"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         Llena el formulario para {''}
         <span className=" text-sky-500 font-bold"> crear tu cuenta</span>
-      </p>
+      </motion.p>
 
-      <form
+      <motion.form
         onSubmit={handleSubmit(handleRegister)}
         className="space-y-8 p-10  bg-white mt-5"
         noValidate
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
       >
         <div className="flex flex-col gap-5">
           <label
@@ -157,8 +165,13 @@ export default function RegisterView() {
           value='Registrarme'
           className="bg-sky-600 hover:bg-sky-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
         />
-      </form>
-      <nav className=" mt-10 flex flex-col space-y-4">
+      </motion.form>
+      <motion.nav
+        className=" mt-10 flex flex-col space-y-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
         <Link to={'/auth/login'} className="text-center text-gray-500">
           <p className="text-center">
             ¿Ya tienes una cuenta? {''}
@@ -172,7 +185,7 @@ export default function RegisterView() {
             <span className="text-sky-600 font-black">Reestablecer</span>
           </p>
         </Link>
-      </nav>
+      </motion.nav>
     </>
   )
 }

@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import type { ConfirmToken } from "../../types";
 import { confirmAccount } from "../../services/AuthAPI";
+import { motion } from "framer-motion";
 
 export default function ConfirmAccountView() {
 
@@ -29,13 +30,20 @@ export default function ConfirmAccountView() {
 
   return (
     <>
-
-      <p className="text-2xl font-light text-white mt-5">
+      <motion.p
+        className="text-2xl font-light text-white mt-5"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         Ingresa el código que recibiste {''}
         <span className=" text-sky-500 font-bold"> por e-mail</span>
-      </p>
-      <form
+      </motion.p>
+      <motion.form
         className="space-y-8 p-10 bg-white mt-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
       >
         <label
           className="font-normal text-2xl text-center block"
@@ -56,17 +64,21 @@ export default function ConfirmAccountView() {
 
           </PinInput>
         </div>
-      </form>
+      </motion.form>
 
-      <nav className="mt-10 flex flex-col space-y-4">
+      <motion.nav
+        className="mt-10 flex flex-col space-y-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
         <Link
           to='/auth/request-code'
           className="text-center text-gray-300 font-normal"
         >
           Solicitar un nuevo Código
         </Link>
-      </nav>
-
-      </>
-    );
-  }
+      </motion.nav>
+    </>
+  );
+}

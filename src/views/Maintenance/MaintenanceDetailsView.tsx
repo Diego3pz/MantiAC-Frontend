@@ -7,6 +7,7 @@ import { EquipmentInfo } from "../../components/AppLayout/Maintenance/EquipmentI
 import { Divider } from "@tremor/react";
 import { toast } from "react-toastify";
 import { Modal } from "antd";
+import { motion } from "framer-motion";
 
 export default function MaintenanceDetailsView() {
     const params = useParams();
@@ -80,7 +81,12 @@ export default function MaintenanceDetailsView() {
     if (isLoading) return <div>Cargando...</div>;
     if (isError || !data) return <Navigate to='/404' />;
     if (data) return (
-        <div className="max-w-5xl mx-auto mt-12 px-2">
+        <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="max-w-5xl mx-auto mt-12 px-2"
+        >
             <MaintenanceHeader
                 onBack={handleBack}
                 onEdit={() => navigate(`/equipments/${data.equipment._id}/maintenance/${data._id}/edit`)}
@@ -90,7 +96,12 @@ export default function MaintenanceDetailsView() {
             />
             <Divider className="my-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border border-gray-200 dark:border-gray-800 dark:text-gray-100 transition-colors">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.4 }}
+                    className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border border-gray-200 dark:border-gray-800 dark:text-gray-100 transition-colors"
+                >
                     <MaintenanceInfo maintenance={data} />
                     {!data.completed && (
                         <button
@@ -101,11 +112,16 @@ export default function MaintenanceDetailsView() {
                             {marcando ? "Marcando..." : "Marcar como realizado"}
                         </button>
                     )}
-                </div>
-                <div className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border border-gray-200 dark:border-gray-800 dark:text-gray-100 transition-colors">
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.4 }}
+                    className="bg-white dark:bg-gray-900 rounded-xl shadow p-6 border border-gray-200 dark:border-gray-800 dark:text-gray-100 transition-colors"
+                >
                     <EquipmentInfo equipment={data.equipment} />
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 }
