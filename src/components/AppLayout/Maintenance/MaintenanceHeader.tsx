@@ -1,15 +1,14 @@
 import { Button, Space, Tooltip } from "antd";
-import { ArrowLeftOutlined, EditOutlined, DeleteOutlined, PrinterOutlined, FilePdfOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, EditOutlined, DeleteOutlined, FilePdfOutlined } from "@ant-design/icons";
 
 interface Props {
     onBack: () => void;
     onEdit: () => void;
     onDelete: () => void;
-    onPrint: () => void;
     onDownloadPDF: () => void;
 }
 
-export function MaintenanceHeader({ onBack, onEdit, onDelete, onPrint, onDownloadPDF }: Props) {
+export function MaintenanceHeader({ onBack, onEdit, onDelete, onDownloadPDF }: Props) {
 
     return (
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
@@ -38,13 +37,6 @@ export function MaintenanceHeader({ onBack, onEdit, onDelete, onPrint, onDownloa
                         danger
                         onClick={onDelete}
                         className="text-red-600 dark:text-red-400 hover:!bg-red-100 dark:hover:!bg-red-900"
-                    />
-                </Tooltip>
-                <Tooltip title="Imprimir">
-                    <Button
-                        icon={<PrinterOutlined />}
-                        onClick={onPrint}
-                        className="text-blue-600 dark:text-blue-300 hover:!bg-blue-100 dark:hover:!bg-blue-900"
                     />
                 </Tooltip>
                 <Tooltip title="Descargar PDF">

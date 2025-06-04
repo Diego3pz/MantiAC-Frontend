@@ -18,7 +18,12 @@ export default function EquipmentForm({ register, errors }: EquipmentFormProps) 
             <input
                 id="brand"
                 type="text"
-                {...register("brand", { required: "La marca es obligatoria" })}
+                maxLength={30}
+                {...register("brand", {
+                    required: "La marca es obligatoria",
+                    maxLength: { value: 30, message: "Máximo 30 caracteres" },
+                    validate: value => value.trim().length > 0 || "No puede estar vacío"
+                })}
                 className="w-full border border-blue-200 dark:border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 dark:text-gray-100 transition"
                 placeholder="Ej: LG, Samsung, etc."
             />
@@ -32,7 +37,12 @@ export default function EquipmentForm({ register, errors }: EquipmentFormProps) 
             <input
                 id="serialNumber"
                 type="text"
-                {...register("serialNumber", { required: "El número de serie es obligatorio" })}
+                maxLength={40}
+                {...register("serialNumber", {
+                    required: "El número de serie es obligatorio",
+                    maxLength: { value: 40, message: "Máximo 40 caracteres" },
+                    validate: value => value.trim().length > 0 || "No puede estar vacío"
+                })}
                 className="w-full border border-blue-200 dark:border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 dark:bg-gray-800 placeholder-gray-400 dark:placeholder-gray-500 dark:text-gray-100 transition"
                 placeholder="Ej: SN123456"
             />

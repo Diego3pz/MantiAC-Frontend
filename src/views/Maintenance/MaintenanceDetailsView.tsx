@@ -8,12 +8,16 @@ import { Divider } from "@tremor/react";
 import { toast } from "react-toastify";
 import { Modal } from "antd";
 import { motion } from "framer-motion";
+import { pdf } from '@react-pdf/renderer';
+import { MaintenancePDF } from '../../components/pdf/MaintenancePDF';
+import { useAuth } from "../../hooks/useAuth";
 
 export default function MaintenanceDetailsView() {
     const params = useParams();
     const maintenanceId = params.maintenanceId!;
     const navigate = useNavigate();
     const location = useLocation();
+    const { data: user } = useAuth();
 
     // Llamada a la API para obtener los detalles del mantenimiento
     const { data, isLoading, isError } = useQuery({
@@ -78,6 +82,21 @@ export default function MaintenanceDetailsView() {
         });
     };
 
+    const handleDownloadPDF = async () => {
+        if (!data) return;
+        const blob = await pdf(
+            <MaintenancePDF maintenance={data} equipment={data.equipment} technician={user} />
+        ).toBlob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Mantenimiento_${data.equipment.brand}_${data.date}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    };
+
     if (isLoading) return <div>Cargando...</div>;
     if (isError || !data) return <Navigate to='/404' />;
     if (data) return (
@@ -91,8 +110,7 @@ export default function MaintenanceDetailsView() {
                 onBack={handleBack}
                 onEdit={() => navigate(`/equipments/${data.equipment._id}/maintenance/${data._id}/edit`)}
                 onDelete={showDeleteConfirm}
-                onPrint={() => window.print()}
-                onDownloadPDF={() => { }}
+                onDownloadPDF={handleDownloadPDF}
             />
             <Divider className="my-6" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
