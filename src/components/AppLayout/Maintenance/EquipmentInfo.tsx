@@ -4,7 +4,13 @@ import {
     EnvironmentOutlined,
 } from "@ant-design/icons";
 
-export function EquipmentInfo({ equipment }: { equipment: any }) {
+type Equipment = {
+    brand: string;
+    serialNumber: string;
+    location: string;
+};
+
+export function EquipmentInfo({ equipment }: { equipment: Equipment }) {
     return (
         <div>
             <div className="flex flex-col items-center md:flex-row md:items-center gap-2 mb-6">

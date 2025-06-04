@@ -7,7 +7,7 @@ import LoadingSpinner from "../../atoms/LoadingSpinner";
 interface PasswordFormProps {
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  form: any;
+  form: import("antd").FormInstance<UpdateCurrentUserPasswordForm>;
 }
 
 export default function PasswordForm({ loading, setLoading, form }: PasswordFormProps) {

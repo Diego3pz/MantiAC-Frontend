@@ -58,7 +58,7 @@ export function useMaintenanceColumns(onDelete: (id: string) => void) {
                 { text: 'Sala capacitación cafetería', value: 'Sala capacitación cafetería' },
             ],
             onFilter: (value, record) => record.equipment.location === value,
-            render: (equipment: any) => (
+            render: (equipment: Maintenance['equipment']) => (
                 <div className="max-w-[200px]">
                     <Tooltip title={equipment.brand}>
                         <b className="block truncate">{truncate(equipment.brand, 18)}</b>

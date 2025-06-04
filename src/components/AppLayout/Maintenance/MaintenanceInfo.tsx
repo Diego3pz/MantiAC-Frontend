@@ -13,8 +13,18 @@ import { useAuth } from "../../../hooks/useAuth";
 
 const { Panel } = Collapse;
 
+type Maintenance = {
+    type: string;
+    date: string | Date;
+    completed: boolean;
+    supervisedBy: string;
+    cost?: number;
+    createdAt: string | Date;
+    updatedAt: string | Date;
+    description?: string;
+};
 
-export function MaintenanceInfo({ maintenance }: { maintenance: any }) {
+export function MaintenanceInfo({ maintenance }: { maintenance: Maintenance }) {
     const { data: user } = useAuth();
     const getTypeColor = (type: string) => {
         if (type === 'Preventivo Completo') return 'green';

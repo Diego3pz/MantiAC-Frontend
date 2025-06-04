@@ -56,7 +56,7 @@ export default function EditMaintenanceForm({ data }: EditMaintenanceFormProps) 
     });
 
     const handleForm = (formData: MaintenanceFormData) => {
-        let cleanFormData = { ...formData };
+        const cleanFormData = { ...formData };
 
         if (formData.type !== "Correctivo") {
             delete cleanFormData.description;

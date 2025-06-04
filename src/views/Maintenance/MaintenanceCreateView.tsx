@@ -40,7 +40,7 @@ const queryClient = useQueryClient()
   })
 
   const handleForm = async (formData: MaintenanceFormData) => {
-    let cleanFormData = { ...formData };
+    const cleanFormData = { ...formData };
 
     if (formData.type !== "Correctivo") {
       delete cleanFormData.description;

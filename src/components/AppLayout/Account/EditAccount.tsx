@@ -11,7 +11,7 @@ interface ProfileFormProps {
     loading: boolean;
     setLoading: (loading: boolean) => void;
     onDelete: () => void;
-    form: any;
+    form: import("antd").FormInstance;
 }
 
 export default function ProfileForm({ user, loading, setLoading, onDelete, form }: ProfileFormProps) {

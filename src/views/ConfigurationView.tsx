@@ -19,7 +19,7 @@ function ConfigurationView() {
       toast.success(data);
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(error.message);
       setNotifications((prev) => !prev);
     }

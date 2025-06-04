@@ -11,6 +11,22 @@ interface EquipmentDetailsColumnProps {
 
 export function useEquipmentDetailsColumns({ handleView, handleEdit, handleDelete }: EquipmentDetailsColumnProps) {
 
+    interface EquipmentRecord {
+        _id: string;
+        type: string;
+        date: string;
+        completed: boolean;
+        supervisedBy: string;
+        cost?: number;
+    }
+
+    interface EquipmentDetailsColumn<T = EquipmentRecord> {
+        title: string;
+        dataIndex?: keyof T;
+        key: string;
+        render?: (value: T[keyof T], record?: T) => React.ReactNode;
+    }
+
     return [
         {
             title: "Tipo",
@@ -61,7 +77,7 @@ export function useEquipmentDetailsColumns({ handleView, handleEdit, handleDelet
         {
             title: "Acciones",
             key: "actions",
-            render: (_: string, record: any) => (
+            render: (_: string, record: EquipmentRecord) => (
                 <Space>
                     <Tooltip title="Ver detalles">
                         <Button
@@ -90,5 +106,5 @@ export function useEquipmentDetailsColumns({ handleView, handleEdit, handleDelet
                 </Space>
             ),
         },
-    ];
+    ] as EquipmentDetailsColumn[];
 }
