@@ -39,7 +39,7 @@ export default function RegisterView() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
             >
                 Coloca tu e-mail para recibir {''}
-                <span className=" text-fuchsia-500 font-bold"> un nuevo código</span>
+                <span className=" text-sky-500 font-bold"> un nuevo código</span>
             </motion.p>
 
             <motion.form
@@ -76,7 +76,7 @@ export default function RegisterView() {
                 <input
                     type="submit"
                     value='Enviar Código'
-                    className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
+                    className="bg-sky-600 hover:bg-sky-700 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
                 />
             </motion.form>
 
