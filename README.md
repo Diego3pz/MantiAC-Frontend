@@ -16,7 +16,7 @@ Interfaz de usuario del sistema de gestión de mantenimiento de aires acondicion
 - 📊 Tremor UI
 - 📡 Axios
 - 🧪 ESLint + Prettier
-- 🔍 Remix Icons
+- 🔍 Ant Design Icons
 
 ## ⚙️ Variables de Entorno
 
