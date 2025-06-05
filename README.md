@@ -63,6 +63,14 @@ npm run preview   # Previsualizar la build de producción
 
 El proyecto puede ser desplegado fácilmente en plataformas como **Vercel** o **Netlify**.
 
+## ⚙️ Backend
+
+Encuentra el backend en la siguiente liga:
+
+```
+https://github.com/Diego3pz/MantiAC-Backend/
+```
+
 ## 📄 Licencia
 
 Diego Espinoza
