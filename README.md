@@ -1,54 +1,68 @@
-# React + TypeScript + Vite
+# MantiAC - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz de usuario del sistema de gestión de mantenimiento de aires acondicionados. Este frontend está construido con **React + TypeScript**, usa **Vite** como bundler, y está estilizado con **Tailwind CSS**. Se conecta con la API REST del backend para gestionar equipos, mantenimientos y técnicos.
 
-Currently, two official plugins are available:
+## 🧰 Tecnologías Principales
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚛️ React 18 + TypeScript
+- ⚡ Vite
+- 🎨 Tailwind CSS + Ant Design
+- 🌐 React Router DOM v7
+- 📦 React Query + DevTools
+- 🧾 React PDF Renderer
+- 📋 React Hook Form + Zod
+- 🔥 Framer Motion
+- 🔔 React Toastify
+- 📊 Tremor UI
+- 📡 Axios
+- 🧪 ESLint + Prettier
+- 🔍 Remix Icons
 
-## Expanding the ESLint configuration
+## ⚙️ Variables de Entorno
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Crea un archivo `.env` en la raíz con:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```env
+VITE_API_URL=http://localhost:4000/api
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📦 Instalación
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+git clone https://github.com/Diego3pz/MantiAC-Frontend.git
+cd MantiAC-Frontend
+npm install
 ```
+
+## 🧪 Comandos Útiles
+
+```bash
+npm run dev       # Servidor de desarrollo
+npm run build     # Compilar para producción
+npm run lint      # Revisar el código con ESLint
+npm run preview   # Previsualizar la build de producción
+```
+
+## 🗂️ Estructura del Proyecto
+
+```
+├── public/
+├── src/
+│   ├── components/
+│   ├── hooks/
+│   ├── pages/
+│   ├── services/
+│   ├── utils/
+│   └── App.tsx
+├── tailwind.config.js
+├── vite.config.ts
+└── tsconfig.json
+```
+
+## 🚀 Despliegue
+
+El proyecto puede ser desplegado fácilmente en plataformas como **Vercel** o **Netlify**.
+
+## 📄 Licencia
+
+Diego Espinoza
